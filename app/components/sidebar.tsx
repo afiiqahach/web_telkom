@@ -10,7 +10,7 @@ const Sidebar = () => {
   const [requestOpen, setRequestOpen] = useState(false);
 
   return (
-    <div className="w-64 h-screen bg-[#EE2E24] text-white p-4">
+    <div className="w-64 max-h-full bg-[#EE2E24] text-white p-4">
       {/* Sidebar items */}
       <div className="mb-4 p-2 hover:bg-red-500 rounded-md cursor-pointer">Assets & Area</div>
       <div className="mb-4 p-2 hover:bg-red-500 rounded-md cursor-pointer">Person Service</div>
