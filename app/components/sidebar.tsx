@@ -16,7 +16,7 @@ const Sidebar = () => {
     </div>
     {incidentOpen && (
       <div className="ml-4">
-        <div className="p-2 hover:bg-red-300 rounded-md"><Link href="#">Inbox Ticket Draft</Link></div>
+        <div className="p-2 hover:bg-red-300 rounded-md"><Link href="/ticket">Inbox Ticket Draft</Link></div>
         <div className="p-2 hover:bg-red-300 rounded-md"><Link href="#">Inbox Ticket Loker</Link></div>
         <div className="p-2 hover:bg-red-300 rounded-md"><Link href="#">Inbox Ticket Pribadi</Link></div>
         <div className="p-2 hover:bg-red-300 rounded-md"><Link href="#">Inbox Ticket Imbas Gamas</Link></div>
