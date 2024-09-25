@@ -10,4 +10,9 @@ const Footer = () => {
     );
   };
   
+<<<<<<< HEAD
   export default Footer;
+=======
+  export default Footer;
+  
+>>>>>>> a3ae6fbdeffff7a6b8e026859372445db5ff4a91
