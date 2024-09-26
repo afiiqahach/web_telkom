@@ -1,4 +1,4 @@
-"use client";
+'use client'
 import { useState } from 'react';
 import { useRouter } from "next/navigation";
 
@@ -78,6 +78,16 @@ export default function LoginPage() {
             Sign in
           </button>
         </form>
+
+        <hr className='my-6 border-gray-300'/>
+
+        {/*Sign-up Section */}
+        <p className='text-center text-gray-600'>
+          {"Don't have an account?"}
+          <button onClick={() => router.push('/signUp')} className='text-red-500 font-semibold hover:underline ml-1'>
+            Sign Up
+          </button>
+        </p>
       </div>
     </div>
   );
