@@ -4,13 +4,11 @@ import Header from "../components/header";
 
 const Ticket = () => {
     return (
-        <div>
-            <div>
-                <Header />
-            </div>
-            <div className="flex">
+        <div >
+            <Sidebar/>
+            <div className="ms-64">
                 <div>
-                    <Sidebar/>
+                    <Header/>
                 </div>
                 <div>
                     <TicketTable/>
