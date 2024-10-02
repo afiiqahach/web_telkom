@@ -2,21 +2,56 @@
 import { useState } from 'react';
 import { useRouter } from "next/navigation";
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '@/lib/firebaseConfig';  // Path ke konfigurasi Firebase
+import { auth, db } from '@/lib/firebaseConfig';  // Path ke konfigurasi Firebase
+import { collection, query, where, getDocs } from 'firebase/firestore';
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('');
+  const [emailOrUsername, setEmailOrUsername] = useState('');
   const [password, setPassword] = useState('');
   const [remember, setRemember] = useState(false);
   const [error, setError] = useState('');
 
   const router = useRouter();
 
+  // Fungsi untuk mencari email berdasarkan username
+  const findEmailByUsername = async (username: string) => {
+    try {
+      const userRef = collection(db, "arina");
+      const q = query(userRef, where('username', '==', username));
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        const userData = querySnapshot.docs[0].data();  // Ambil data user pertama yang cocok
+        if (userData && 'email' in userData) {
+          return userData.email;  // Ambil email jika ditemukan
+        } else {
+          throw new Error('Email not found for the given username');
+        }
+      } else {
+        throw new Error('Username not found');
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);  // Lempar error kembali untuk ditangani di luar
+      } else {
+        throw new Error('An unexpected error occurred');
+      }
+    }
+  };
+
+  // Fungsi untuk menangani login
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');  // Reset error state
 
     try {
+      let email = emailOrUsername;
+
+      // Cek apakah input bukan email (username)
+      if (!email.includes('@')) {
+        email = await findEmailByUsername(emailOrUsername);
+      }
+
       // Login dengan Firebase Authentication
       await signInWithEmailAndPassword(auth, email, password);
 
@@ -34,9 +69,9 @@ export default function LoginPage() {
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
-      <div className="bg-white p-20 w- rounded-lg border-t-4 border-red-600 shadow-lg w-[940px] h-[600px] flex-shrink-0 max-w-md">
-        <h2 className="text-center text-[#2e2e2e] text-[40px] font-semibold">
-          Welcome to <span className="text-red-500"><br />ARINA</span>
+      <div className="bg-white p-8 rounded-lg border-t-4 border-red-600 shadow-lg max-w-md w-full">
+        <h2 className="text-center text-[#2e2e2e] text-[32px] font-semibold">
+          Welcome to <span className="text-red-500">ARINA</span>
         </h2>
         
         {/* Tampilkan pesan error jika login gagal */}
@@ -44,13 +79,13 @@ export default function LoginPage() {
 
         <form onSubmit={handleLogin} className="space-y-4">
           <div>
-            <label className="block text-gray-700 mt-6">Username or email</label>
+            <label className="block text-gray-700">Username or email</label>
             <input
-              type="email"
-              className=" w-full p-3 border border-gray-300 rounded-lg"
-              placeholder="example@gmail.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="text"
+              className="w-full p-3 border border-gray-300 rounded-lg"
+              placeholder="Enter your username or email"
+              value={emailOrUsername}
+              onChange={(e) => setEmailOrUsername(e.target.value)}
             />
           </div>
           <div>
@@ -76,7 +111,7 @@ export default function LoginPage() {
                 Remember me
               </label>
             </div>
-            <a href="#" className="text-sm text-red-500">
+            <a href="/forgotPassword" className="text-sm text-red-500">
               Forgot Password?
             </a>
           </div>
@@ -90,7 +125,7 @@ export default function LoginPage() {
 
         <hr className="my-6 border-gray-300" />
 
-        {/*Sign-up Section */}
+        {/* Sign-up Section */}
         <p className="text-center text-gray-600">
           {"Don't have an account?"}
           <button onClick={() => router.push('/signUp')} className="text-red-500 font-semibold hover:underline ml-1">
@@ -100,4 +135,4 @@ export default function LoginPage() {
       </div>
     </div>
   );
-}
+};
