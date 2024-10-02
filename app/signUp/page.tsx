@@ -143,9 +143,11 @@
 'use client';
 import Image from "next/image";
 import { useState } from "react";
-import { auth } from "@/lib/firebaseConfig";
+import { auth, db } from "@/lib/firebaseConfig";
 import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
 import { useRouter } from "next/navigation";
+import { doc, setDoc } from "firebase/firestore"; // Tambahkan Firestore
+
 
 const SignUp = () => {
     const [username, setUsername] = useState('');
@@ -180,8 +182,17 @@ const SignUp = () => {
 
             // Kirim email verifikasi
             await sendEmailVerification(user);
+
+             // Simpan informasi pengguna ke Firestore
+             await setDoc(doc(db, "arina", user.uid), {
+                username: username,
+                email: email,
+                createdAt: new Date(),  // Tanggal pembuatan akun
+            });
+
             setSuccess("Sign up successful! Verification email sent.");
             setError(""); // Reset error message
+
             setTimeout(() => {
                 router.push("/")
             }, 1000)
