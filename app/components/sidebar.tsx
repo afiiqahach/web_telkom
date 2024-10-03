@@ -3,17 +3,25 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faChevronRight, faInbox, faList, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { useRouter } from "next/navigation";
 
 const Sidebar = () => {
   const [incidentOpen, setIncidentOpen] = useState(false);
   const [saldoOpen, setSaldoOpen] = useState(false);
   const [requestOpen, setRequestOpen] = useState(false);
 
+  const router = useRouter();
+
+  const navigateToDashboard = () => {
+    router.push('/')
+  }
+
   return (
     <div className='fixed py-1'>
       <div className="justify-start flex bg-white py-4 px-8">
         <img src="img/logokecil.png" alt="bot" />
-        <h1 className="text-2xl font-bold justify-start ps-4">ARINA</h1>
+        <button className="text-2xl font-bold justify-start ps-4"
+        onClick={navigateToDashboard}>ARINA</button>
       </div>
       <div className=" w-72 min-h-screen bg-[#EE2E24] text-white p-4">
       {/* Sidebar items */}
