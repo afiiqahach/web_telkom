@@ -113,12 +113,12 @@ const SignUp = () => {
                             className="absolute right-3 top-3"
                             onClick={() => setShowPassword(!showPassword)}
                         >
-                            <Image
+                            {/* <Image
                                 src={showPassword ? '/img/eye-closed.png' : '/img/eye-open.png'}
                                 alt="Show/Hide Password"
                                 width={24}
                                 height={24}
-                            />
+                            /> */}
                         </button>
                     </div>
 
@@ -140,12 +140,6 @@ const SignUp = () => {
                             className="absolute right-3 top-3"
                             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                         >
-                            <Image
-                                src={showConfirmPassword ? '/img/eye-closed.png' : '/img/eye-open.png'}
-                                alt="Show/Hide Confirm Password"
-                                width={24}
-                                height={24}
-                            />
                         </button>
                     </div>
 
