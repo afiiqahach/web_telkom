@@ -54,16 +54,16 @@ const Header = () => {
       </div>
 
       {/* Profil dan Nama */}
-      <div className="relative border border-gray-300 rounded-lg w-64 hover:bg-gray-300">
+      <div className="relative border border-gray-300 rounded-lg w-60 ">
         <div
-          className="w-60 h-[58px] relative cursor-pointer flex items-center justify-between"
+          className="w-60 h-[58px] relative cursor-pointer flex items-center gap-20 hover:bg-gray-200"
           onClick={() => setDropdownOpen(!dropdownOpen)} // Toggle dropdown
         >
-          <div className="flex items-center">
+          <div className="flex items-center hover:bg-gray-200 rounded-lg">
             {/* Ikon Profil */}
             <UserIcon className="h-10 w-10 text-black ml-2" />
             <div className="left-[73px] top-[11px] ml-4">
-              <div className="text-[#232738] text-sm font-semibold">
+              <div className="text-[#232738] text-sm font-semibold ">
                 {user ? (user.displayName || user.email) : "Guest"}
               </div>
               <div className="text-[#555353] text-xs font-medium">{user ? "User" : "Admin"}</div>
