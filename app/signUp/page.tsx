@@ -1,5 +1,5 @@
 'use client';
-import Image from "next/image";
+// import Image from "next/image";
 import { useState } from "react";
 import { auth, db } from "@/lib/firebaseConfig";
 import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";

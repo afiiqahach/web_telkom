@@ -53,9 +53,15 @@ export default function LoginPage() {
       }
 
       // Login dengan Firebase Authentication
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
 
-      // Jika login berhasil, redirect ke halaman dashboard
+      // Cek apakah email sudah terverifikasi
+      if (!user.emailVerified) {
+        throw new Error('Please verify your email before logging in.');
+      }
+
+      // Jika login berhasil dan email terverifikasi, redirect ke halaman dashboard
       router.push('/');
     } catch (error) {
       // Tangani error saat login
