@@ -56,7 +56,7 @@ export default function LoginPage() {
       await signInWithEmailAndPassword(auth, email, password);
 
       // Jika login berhasil, redirect ke halaman dashboard
-      router.push('/dashboard');
+      router.push('/');
     } catch (error) {
       // Tangani error saat login
       if (error instanceof Error) {

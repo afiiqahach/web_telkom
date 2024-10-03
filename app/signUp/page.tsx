@@ -51,7 +51,7 @@ const SignUp = () => {
             setError(""); // Reset error message
 
             setTimeout(() => {
-                router.push("/")
+                router.push("/login")
             }, 1000)
         } catch (error) {
             // Use general Error type
@@ -128,7 +128,10 @@ const SignUp = () => {
                             type={showConfirmPassword ? "text" : "password"}
                             placeholder="Confirm Your Password"
                             value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            onChange={(e) => {
+                                console.log(e.target.value);
+                                setConfirmPassword(e.target.value)}
+                            }
                             className="w-full p-3 border border-gray-300 rounded-lg"
                             required
                         />
