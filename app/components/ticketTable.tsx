@@ -139,7 +139,6 @@ const TicketTable: React.FC = () => {
               <th className="p-4 text-left">U</th>
               <th className="p-4 text-left">V</th>
               <th className="p-4 text-left">W</th>
-              
               {/* <th className="p-4 text-left">SUBSIDIARY</th>
               <th className="p-4 text-left">EXTERNAL TICKET ID</th>
               <th className="p-4 text-left">CHANNEL</th>

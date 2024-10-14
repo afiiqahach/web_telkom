@@ -22,13 +22,10 @@ const Sidebar = () => {
 
   return (
     <div className='fixed py-1'>
-      <div className="flex items-center bg-white py-4 px-8 shadow-md">
+      <div className="justify-start flex bg-white py-4 px-8">
         <img src="img/logokecil.png" alt="bot" />
-        <button 
-          className="text-2xl font-bold ps-4 text-[#EE2E24] hover:text-red-700 transition-colors duration-300"
-          onClick={navigateToDashboard}>
-          ARINA
-        </button>
+        <button className="text-2xl font-bold justify-start ps-4"
+        onClick={navigateToDashboard}>ARINA</button>
       </div>
       <div className="w-72 min-h-screen bg-[#EE2E24] text-white p-4 shadow-lg">
         {/* Sidebar items */}
