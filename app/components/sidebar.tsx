@@ -19,7 +19,7 @@ const Sidebar = () => {
   return (
     <div className='fixed py-1'>
       <div className="justify-start flex bg-white py-4 px-8">
-        <img src="img/logokecil.png" alt="bot" />
+        <img src="img/logokecil.png" alt="bot"/>
         <button className="text-2xl font-bold justify-start ps-4"
         onClick={navigateToDashboard}>ARINA</button>
       </div>
