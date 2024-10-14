@@ -5,76 +5,78 @@ import { useState, useEffect } from "react";
 
 // 1. Definisikan tipe untuk ticket
 interface Ticket {
-  INCIDENT: string;
-  TTR_CUSTOMER?: string;
-  SUMMARY: string;
-  REPORTED_DATE?: string;
-  OWNER_GROUP: string;
-  OWNER?: string;
-  CUSTOMER_SEGMENT: string;
-  SERVICE_TYPE: string;
-  WITEL: string;
-  WORKZONE: string;
-  STATUS?: string;
-  STATUS_DATE?: string;
-  TICKET_ID_GAMAS?: string;
-  REPORTED_BY?: string;
-  CONTACT_PHONE?: string;
-  CONTACT_NAME?: string;
-  CONTACT_EMAIL?: string;
-  BOOKING_DATE?: string;
-  DESCRIPTION_ASSIGNMENT?: string;
-  REPORTED_PRIORITY?: string;
-  SOURCE_TICKET?: string;
-  SUBSIDIARY?: string;
-  EXTERNAL_TICKET_ID?: string;
-  CHANNEL?: string;
-  CUSTOMER_TYPE?: string;
-  CLOSED_BY?: string;
-  CLOSED_REOPEN_BY?: string;
-  CUSTOMER_ID: string;
-  CUSTOMER_NAME: string;
-  SERVICE_ID: string;
-  SERVICE_NO: string;
-  SLG?: string;
-  TECHNOLOGY: string;
-  LAPUL?: string;
-  GAUL?: string;
-  ONU_RX?: string;
-  PENDING_REASON?: string;
-  DATEMODIFIED?: string;
-  INCIDENT_DOMAIN: string;
-  REGION: string;
-  SYMPTOM?: string;
-  HIERARCHY_PATH?: string;
-  SOLUTION?: string;
-  DESCRIPTION_ACTUAL_SOLUTION?: string;
-  KODE_PRODUK?: string;
-  PERANGKAT?: string;
-  TECHNICIAN?: string;
-  DEVICE_NAME?: string;
-  WORKLOG_SUMMARY?: string;
-  CLASSIFICATION_FLAG?: string;
-  REALM?: string;
-  RELATED_TO_GAMAS?: string;
-  TSC_RESULT?: string;
-  SCC_RESULT?: string;
-  TTR_AGENT?: string;
-  TTR_MITRA?: string;
-  TTR_NASIONAL?: string;
-  TTR_PENDING?: string;
-  TTR_REGION?: string;
-  TTR_WITEL?: string;
-  TTR_END_TO_END?: string;
-  NOTE?: string;
-  GUARANTE_STATUS?: string;
-  RESOLVE_DATE?: string;
-  SN_ONT?: string;
-  TIPE_ONT?: string;
-  MANUFACTURE_ONT?: string;
-  IMPACTED_SITE?: string;
-  CAUSE?: string;
-  RESOLUTION?: string;
+  A?: string;
+  B?: string;
+  C?: string;
+  D?: string;
+  E?: string;
+  F?: string;
+  G?: string;
+  H?: string;
+  I?: string;
+  J?: string;
+  K?: string;
+  L?: string;
+  M?: string;
+  N?: string;
+  O?: string;
+  P?: string;
+  Q?: string;
+  R?: string;
+  S?: string;
+  T?: string;
+  U?: string;
+  V?: string;
+  W?: string;
+  // SUBSIDIARY?: string;
+  // EXTERNAL_TICKET_ID?: string;
+  // CHANNEL?: string;
+  // CUSTOMER_TYPE?: string;
+  // CLOSED_BY?: string;
+  // CLOSED_REOPEN_BY?: string;
+  // CUSTOMER_ID: string;
+  // CUSTOMER_NAME: string;
+  // SERVICE_ID: string;
+  // SERVICE_NO: string;
+  // SLG?: string;
+  // TECHNOLOGY: string;
+  // LAPUL?: string;
+  // GAUL?: string;
+  // ONU_RX?: string;
+  // PENDING_REASON?: string;
+  // DATEMODIFIED?: string;
+  // INCIDENT_DOMAIN: string;
+  // REGION: string;
+  // SYMPTOM?: string;
+  // HIERARCHY_PATH?: string;
+  // SOLUTION?: string;
+  // DESCRIPTION_ACTUAL_SOLUTION?: string;
+  // KODE_PRODUK?: string;
+  // PERANGKAT?: string;
+  // TECHNICIAN?: string;
+  // DEVICE_NAME?: string;
+  // WORKLOG_SUMMARY?: string;
+  // CLASSIFICATION_FLAG?: string;
+  // REALM?: string;
+  // RELATED_TO_GAMAS?: string;
+  // TSC_RESULT?: string;
+  // SCC_RESULT?: string;
+  // TTR_AGENT?: string;
+  // TTR_MITRA?: string;
+  // TTR_NASIONAL?: string;
+  // TTR_PENDING?: string;
+  // TTR_REGION?: string;
+  // TTR_WITEL?: string;
+  // TTR_END_TO_END?: string;
+  // NOTE?: string;
+  // GUARANTE_STATUS?: string;
+  // RESOLVE_DATE?: string;
+  // SN_ONT?: string;
+  // TIPE_ONT?: string;
+  // MANUFACTURE_ONT?: string;
+  // IMPACTED_SITE?: string;
+  // CAUSE?: string;
+  // RESOLUTION?: string;
 }
 
 const TicketTable: React.FC = () => {
@@ -114,28 +116,31 @@ const TicketTable: React.FC = () => {
         <table className="table-auto min-w-max">
           <thead>
             <tr className="bg-gray-100 text-sm">
-              <th className="p-4 text-left">INCIDENT</th>
-              <th className="p-4 text-left">TTR CUSTOMER</th>
-              <th className="p-4 text-left">SUMMARY</th>
-              <th className="p-4 text-left">REPORTED DATE</th>
-              <th className="p-4 text-left">OWNER GROUP</th>
-              <th className="p-4 text-left">OWNER</th>
-              <th className="p-4 text-left">CUSTOMER SEGMENT</th>
-              <th className="p-4 text-left">SERVICE TYPE</th>
-              <th className="p-4 text-left">WITEL</th>
-              <th className="p-4 text-left">WORKZONE</th>
-              <th className="p-4 text-left">STATUS</th>
-              <th className="p-4 text-left">STATUS DATE</th>
-              <th className="p-4 text-left">TICKET ID GAMAS</th>
-              <th className="p-4 text-left">REPORTED BY</th>
-              <th className="p-4 text-left">CONTACT PHONE</th>
-              <th className="p-4 text-left">CONTACT NAME</th>
-              <th className="p-4 text-left">CONTACT EMAIL</th>
-              <th className="p-4 text-left">BOOKING DATE</th>
-              <th className="p-4 text-left">DESCRIPTION ASSIGMENT</th>
-              <th className="p-4 text-left">REPORTED PRIORITY</th>
-              <th className="p-4 text-left">SOURCE TICKET</th>
-              <th className="p-4 text-left">SUBSIDIARY</th>
+              <th className="p-4 text-left">A</th>
+              <th className="p-4 text-left">B</th>
+              <th className="p-4 text-left">C</th>
+              <th className="p-4 text-left">D</th>
+              <th className="p-4 text-left">E</th>
+              <th className="p-4 text-left">F</th>
+              <th className="p-4 text-left">G</th>
+              <th className="p-4 text-left">H</th>
+              <th className="p-4 text-left">I</th>
+              <th className="p-4 text-left">J</th>
+              <th className="p-4 text-left">K</th>
+              <th className="p-4 text-left">L</th>
+              <th className="p-4 text-left">M</th>
+              <th className="p-4 text-left">N</th>
+              <th className="p-4 text-left">O</th>
+              <th className="p-4 text-left">P</th>
+              <th className="p-4 text-left">Q</th>
+              <th className="p-4 text-left">R</th>
+              <th className="p-4 text-left">S</th>
+              <th className="p-4 text-left">T</th>
+              <th className="p-4 text-left">U</th>
+              <th className="p-4 text-left">V</th>
+              <th className="p-4 text-left">W</th>
+              
+              {/* <th className="p-4 text-left">SUBSIDIARY</th>
               <th className="p-4 text-left">EXTERNAL TICKET ID</th>
               <th className="p-4 text-left">CHANNEL</th>
               <th className="p-4 text-left">CUSTOMER TYPE</th>
@@ -183,13 +188,36 @@ const TicketTable: React.FC = () => {
               <th className="p-4 text-left">MANUFACTURE ONT</th>
               <th className="p-4 text-left">IMPACTED SITE</th>
               <th className="p-4 text-left">CAUSE</th>
-              <th className="p-4 text-left">RESOLUTION</th>
+              <th className="p-4 text-left">RESOLUTION</th> */}
             </tr>
           </thead>
           <tbody>
             {data.map((ticket, index) => (
               <tr key={index}>
-                <td className="p-4">{ticket.INCIDENT}</td>
+                <td className="p-4">{ticket.A}</td>
+                <td className="p-4">{ticket.B}</td>
+                <td className="p-4">{ticket.C}</td>
+                <td className="p-4">{ticket.D}</td>
+                <td className="p-4">{ticket.E}</td>
+                <td className="p-4">{ticket.F}</td>
+                <td className="p-4">{ticket.G}</td>
+                <td className="p-4">{ticket.H}</td>
+                <td className="p-4">{ticket.I}</td>
+                <td className="p-4">{ticket.J}</td>
+                <td className="p-4">{ticket.K}</td>
+                <td className="p-4">{ticket.L}</td>
+                <td className="p-4">{ticket.M}</td>
+                <td className="p-4">{ticket.N}</td>
+                <td className="p-4">{ticket.O}</td>
+                <td className="p-4">{ticket.P}</td>
+                <td className="p-4">{ticket.Q}</td>
+                <td className="p-4">{ticket.R}</td>
+                <td className="p-4">{ticket.S}</td>
+                <td className="p-4">{ticket.T}</td>
+                <td className="p-4">{ticket.U}</td>
+                <td className="p-4">{ticket.V}</td>
+                <td className="p-4">{ticket.W}</td>
+                {/* <td className="p-4">{ticket.INCIDENT}</td>
                 <td className="p-4">{ticket.TTR_CUSTOMER}</td>
                 <td className="p-4">{ticket.SUMMARY}</td>
                 <td className="p-4">{ticket.REPORTED_DATE}</td>
@@ -209,8 +237,8 @@ const TicketTable: React.FC = () => {
                 <td className="p-4">{ticket.BOOKING_DATE}</td>
                 <td className="p-4">{ticket.DESCRIPTION_ASSIGNMENT}</td>
                 <td className="p-4">{ticket.REPORTED_PRIORITY}</td>
-                <td className="p-4">{ticket.SOURCE_TICKET}</td>
-                <td className="p-4">{ticket.SUBSIDIARY}</td>
+                <td className="p-4">{ticket.SOURCE_TICKET}</td> */}
+                {/* <td className="p-4">{ticket.SUBSIDIARY}</td>
                 <td className="p-4">{ticket.EXTERNAL_TICKET_ID}</td>
                 <td className="p-4">{ticket.CHANNEL}</td>
                 <td className="p-4">{ticket.CUSTOMER_TYPE}</td>
@@ -258,7 +286,7 @@ const TicketTable: React.FC = () => {
                 <td className="p-4">{ticket.MANUFACTURE_ONT}</td>
                 <td className="p-4">{ticket.IMPACTED_SITE}</td>
                 <td className="p-4">{ticket.CAUSE}</td>
-                <td className="p-4">{ticket.RESOLUTION}</td>
+                <td className="p-4">{ticket.RESOLUTION}</td> */}
               </tr>
             ))}
           </tbody>

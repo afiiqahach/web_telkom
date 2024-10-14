@@ -23,7 +23,7 @@ db.connect((err) => {
 
 // API endpoint untuk mengambil data
 app.get('/api/data', (req, res) => {
-  const sql = 'SELECT * FROM tiket'; 
+  const sql = 'SELECT * FROM matrial2'; 
   db.query(sql, (err, result) => {
     if (err) throw err;
     res.json(result);
