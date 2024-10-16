@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '@/lib/firebaseConfig'; // Pastikan ini mengarah ke konfigurasi Firebase Anda
@@ -36,9 +36,9 @@ const Dashboard = () => {
         <div className="p-12">
           <div className="bg-white shadow-md rounded-lg p-8 flex items-center justify-between">
             <div className="max-w-md">
-            <h1 className="text-4xl font-bold text-[#104C98] mb-4">
-              Welcome to ARINA Dashboard
-            </h1>
+              <h1 className="text-4xl font-bold text-[#104C98] mb-4">
+                Welcome to ARINA Dashboard
+              </h1>
 
               <p className="text-lg text-gray-700">
                 {user ? (
@@ -56,7 +56,7 @@ const Dashboard = () => {
               </button>
             </div>
             <div className="flex-shrink-0">
-              <img src="img/bot.png" alt="bot" className="h-64" />
+              <img src="/img/arina.jpg" alt="ARINA Bot" className="h-64 rounded-lg shadow-lg" />
             </div>
           </div>
 
