@@ -22,8 +22,12 @@ const Sidebar = () => {
     router.push("/");
   };
 
+  const navigateToTicket = () => {
+    router.push("/ticket");
+  };
+
   return (
-    <div className="fixed top-0 left-0 w-64 h-full bg-[#EE2E24] text-white shadow-lg">
+    <div className="fixed top-0 left-0 w-64 h-full bg-[#104C98] text-white shadow-lg">
       <div className="flex items-center justify-start p-4 bg-white shadow-sm">
         <img src="img/logokecil.png" alt="Telkom" className="h-10" />
         <button
@@ -35,13 +39,16 @@ const Sidebar = () => {
       </div>
       <div className="p-4">
         {/* Sidebar items */}
-        <div className="mb-4 p-2 hover:bg-red-500 rounded-md cursor-pointer">
+        <div
+          className="mb-4 p-2 hover:bg-[#083d6b] rounded-md cursor-pointer"
+          onClick={navigateToTicket}
+        >
           Ticket
         </div>
 
         {/* Incident Ticket with dropdown */}
         <div
-          className="flex items-center mb-4 p-2 hover:bg-red-500 rounded-md cursor-pointer"
+          className="flex items-center mb-4 p-2 hover:bg-[#083d6b] rounded-md cursor-pointer"
           onClick={() => setIncidentOpen(!incidentOpen)}
         >
           <span>Incident Ticket</span>
@@ -55,7 +62,7 @@ const Sidebar = () => {
           <div className="ml-2">
             {/* Saldo Ticket */}
             <div
-              className="flex items-center mb-4 p-2 hover:bg-red-500 rounded-md cursor-pointer"
+              className="flex items-center mb-4 p-2 hover:bg-[#083d6b] rounded-md cursor-pointer"
               onClick={() => setSaldoOpen(!saldoOpen)}
             >
               <span>Saldo Ticket</span>
@@ -67,19 +74,19 @@ const Sidebar = () => {
 
             {saldoOpen && (
               <div className="ml-4 flex flex-col items-start">
-                <button className="mb-4 p-2 hover:bg-red-500 rounded-md">
+                <button className="mb-4 p-2 hover:bg-[#083d6b] rounded-md">
                   <FontAwesomeIcon icon={faInbox} className="mr-2" /> Inbox Ticket Draft
                 </button>
-                <button className="mb-4 p-2 hover:bg-red-500 rounded-md">
+                <button className="mb-4 p-2 hover:bg-[#083d6b] rounded-md">
                   <FontAwesomeIcon icon={faInbox} className="mr-2" /> Inbox Ticket Loker
                 </button>
-                <button className="mb-4 p-2 hover:bg-red-500 rounded-md">
+                <button className="mb-4 p-2 hover:bg-[#083d6b] rounded-md">
                   <FontAwesomeIcon icon={faInbox} className="mr-2" /> Inbox Ticket Pribadi
                 </button>
-                <button className="mb-4 p-2 hover:bg-red-500 rounded-md">
+                <button className="mb-4 p-2 hover:bg-[#083d6b] rounded-md">
                   <FontAwesomeIcon icon={faInbox} className="mr-2" /> Ticket Imbas Gamas
                 </button>
-                <button className="mb-4 p-2 hover:bg-red-500 rounded-md">
+                <button className="mb-4 p-2 hover:bg-[#083d6b] rounded-md">
                   <FontAwesomeIcon icon={faInbox} className="mr-2" /> Inbox Ticket Proactive
                 </button>
               </div>
@@ -87,7 +94,7 @@ const Sidebar = () => {
 
             {/* Request */}
             <div
-              className="flex items-center mb-4 p-2 hover:bg-red-500 rounded-md cursor-pointer"
+              className="flex items-center mb-4 p-2 hover:bg-[#083d6b] rounded-md cursor-pointer"
               onClick={() => setRequestOpen(!requestOpen)}
             >
               <span>Request</span>
@@ -99,10 +106,10 @@ const Sidebar = () => {
 
             {requestOpen && (
               <div className="ml-4">
-                <button className="mb-4 p-2 hover:bg-red-500 rounded-md">
+                <button className="mb-4 p-2 hover:bg-[#083d6b] rounded-md">
                   <FontAwesomeIcon icon={faList} className="mr-2" /> All Ticket List
                 </button>
-                <button className="mb-4 p-2 hover:bg-red-500 rounded-md">
+                <button className="mb-4 p-2 hover:bg-[#083d6b] rounded-md">
                   <FontAwesomeIcon icon={faCheckCircle} className="mr-2" /> Closed Ticket List
                 </button>
               </div>

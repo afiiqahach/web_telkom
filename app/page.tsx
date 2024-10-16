@@ -36,9 +36,10 @@ const Dashboard = () => {
         <div className="p-12">
           <div className="bg-white shadow-md rounded-lg p-8 flex items-center justify-between">
             <div className="max-w-md">
-              <h1 className="text-4xl font-bold text-[#EE2E24] mb-4">
-                Welcome to ARINA Dashboard
-              </h1>
+            <h1 className="text-4xl font-bold text-[#104C98] mb-4">
+              Welcome to ARINA Dashboard
+            </h1>
+
               <p className="text-lg text-gray-700">
                 {user ? (
                   <>
@@ -50,7 +51,7 @@ const Dashboard = () => {
                   'Manage your assets and services efficiently.'
                 )}
               </p>
-              <button className="mt-6 px-4 py-2 bg-[#EE2E24] text-white font-semibold rounded-lg shadow-md hover:bg-red-700 transition-colors duration-300">
+              <button className="mt-6 px-4 py-2 bg-[#104C98] text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-300">
                 Get Started
               </button>
             </div>

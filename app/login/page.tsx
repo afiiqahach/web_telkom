@@ -13,7 +13,6 @@ export default function LoginPage() {
 
   const router = useRouter();
 
-  // Fungsi untuk mencari email berdasarkan username
   const findEmailByUsername = async (username: string) => {
     try {
       const userRef = collection(db, "arina");
@@ -21,9 +20,9 @@ export default function LoginPage() {
       const querySnapshot = await getDocs(q);
 
       if (!querySnapshot.empty) {
-        const userData = querySnapshot.docs[0].data();  // Ambil data user pertama yang cocok
+        const userData = querySnapshot.docs[0].data(); 
         if (userData && 'email' in userData) {
-          return userData.email;  // Ambil email jika ditemukan
+          return userData.email; 
         } else {
           throw new Error('Email not found for the given username');
         }
@@ -32,41 +31,35 @@ export default function LoginPage() {
       }
     } catch (error) {
       if (error instanceof Error) {
-        throw new Error(error.message);  // Lempar error kembali untuk ditangani di luar
+        throw new Error(error.message); 
       } else {
         throw new Error('An unexpected error occurred');
       }
     }
   };
 
-  // Fungsi untuk menangani login
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError('');  // Reset error state
+    setError('');
 
     try {
       let email = emailOrUsername;
 
-      // Cek apakah input bukan email (username)
       if (!email.includes('@')) {
         email = await findEmailByUsername(emailOrUsername);
       }
 
-      // Login dengan Firebase Authentication
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // Cek apakah email sudah terverifikasi
       if (!user.emailVerified) {
         throw new Error('Please verify your email before logging in.');
       }
 
-      // Jika login berhasil dan email terverifikasi, redirect ke halaman dashboard
       router.push('/');
     } catch (error) {
-      // Tangani error saat login
       if (error instanceof Error) {
-        setError(error.message); // Menampilkan pesan error dari Firebase
+        setError(error.message); 
       } else {
         setError('An unexpected error occurred.');
       }
@@ -75,13 +68,12 @@ export default function LoginPage() {
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded-lg border-t-4 border-red-600 shadow-lg max-w-md w-full">
+      <div className="bg-white p-8 rounded-lg border-t-4 border-[#104C98] shadow-lg max-w-md w-full">
         <h2 className="text-center text-[#2e2e2e] text-[32px] font-semibold">
-          Welcome to <span className="text-red-500">ARINA</span>
+          Welcome to <span className="text-[#104C98]">ARINA</span>
         </h2>
         
-        {/* Tampilkan pesan error jika login gagal */}
-        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+        {error && <p className="text-[#104C98] text-center mb-4">{error}</p>}
 
         <form onSubmit={handleLogin} className="space-y-4">
           <div>
@@ -117,13 +109,13 @@ export default function LoginPage() {
                 Remember me
               </label>
             </div>
-            <a href="/forgotPassword" className="text-sm text-red-500">
+            <a href="/forgotPassword" className="text-sm text-[#104C98]">
               Forgot Password?
             </a>
           </div>
           <button
             type="submit"
-            className="w-full py-3 bg-red-500 text-white rounded-lg hover:bg-red-600"
+            className="w-full py-3 bg-[#104C98] text-white rounded-lg hover:bg-blue-700"
           >
             Sign in
           </button>
@@ -131,10 +123,9 @@ export default function LoginPage() {
 
         <hr className="my-6 border-gray-300" />
 
-        {/* Sign-up Section */}
         <p className="text-center text-gray-600">
           {"Don't have an account?"}
-          <button onClick={() => router.push('/signUp')} className="text-red-500 font-semibold hover:underline ml-1">
+          <button onClick={() => router.push('/signUp')} className="text-[#104C98] font-semibold hover:underline ml-1">
             Sign Up
           </button>
         </p>
