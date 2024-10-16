@@ -28,6 +28,56 @@ interface Ticket {
   U?: string;
   V?: string;
   W?: string;
+  X?: string;
+  Y?: string;
+  Z?: string;
+  AA?: string;
+  AB?: string;
+  AC?: string;
+  AD?: string;
+  AE?: string;
+  AF?: string;
+  AG?: string;
+  AH?: string;
+  AI?: string;
+  AJ?: string;
+  AK?: string;
+  AL?: string;
+  AM?: string;
+  AN?: string;
+  AO?: string;
+  AP?: string;
+  AQ?: string;
+  AR?: string;
+  A_S?: string;
+  A_T?: string;
+  AU?: string;
+  AV?: string;
+  AW?: string;
+  AX?: string;
+  AY?: string;
+  AZ?: string;
+  BA?: string;
+  BB?: string;
+  BC?: string;
+  BD?: string;
+  BE?: string;
+  BF?: string;
+  BG?: string;
+  BH?: string;
+  BI?: string;
+  BJ?: string;
+  BK?: string;
+  BL?: string;
+  BM?: string;
+  BN?: string;
+  BO?: string;
+  BP?: string;
+  BQ?: string;
+  BR?: string;
+  BS?: string;
+  BT?: string;
+
   // SUBSIDIARY?: string;
   // EXTERNAL_TICKET_ID?: string;
   // CHANNEL?: string;
@@ -116,29 +166,78 @@ const TicketTable: React.FC = () => {
         <table className="table-auto min-w-max">
           <thead>
             <tr className="bg-gray-100 text-sm">
-              <th className="p-4 text-left">A</th>
-              <th className="p-4 text-left">B</th>
-              <th className="p-4 text-left">C</th>
-              <th className="p-4 text-left">D</th>
-              <th className="p-4 text-left">E</th>
-              <th className="p-4 text-left">F</th>
-              <th className="p-4 text-left">G</th>
-              <th className="p-4 text-left">H</th>
-              <th className="p-4 text-left">I</th>
-              <th className="p-4 text-left">J</th>
-              <th className="p-4 text-left">K</th>
-              <th className="p-4 text-left">L</th>
-              <th className="p-4 text-left">M</th>
-              <th className="p-4 text-left">N</th>
-              <th className="p-4 text-left">O</th>
-              <th className="p-4 text-left">P</th>
-              <th className="p-4 text-left">Q</th>
-              <th className="p-4 text-left">R</th>
-              <th className="p-4 text-left">S</th>
-              <th className="p-4 text-left">T</th>
-              <th className="p-4 text-left">U</th>
-              <th className="p-4 text-left">V</th>
-              <th className="p-4 text-left">W</th>
+            <th className="p-4 text-left">A</th>
+            <th className="p-4 text-left">B</th>
+            <th className="p-4 text-left">C</th>
+            <th className="p-4 text-left">D</th>
+            <th className="p-4 text-left">E</th>
+            <th className="p-4 text-left">F</th>
+            <th className="p-4 text-left">G</th>
+            <th className="p-4 text-left">H</th>
+            <th className="p-4 text-left">I</th>
+            <th className="p-4 text-left">J</th>
+            <th className="p-4 text-left">K</th>
+            <th className="p-4 text-left">L</th>
+            <th className="p-4 text-left">M</th>
+            <th className="p-4 text-left">N</th>
+            <th className="p-4 text-left">O</th>
+            <th className="p-4 text-left">P</th>
+            <th className="p-4 text-left">Q</th>
+            <th className="p-4 text-left">R</th>
+            <th className="p-4 text-left">S</th>
+            <th className="p-4 text-left">T</th>
+            <th className="p-4 text-left">U</th>
+            <th className="p-4 text-left">V</th>
+            <th className="p-4 text-left">W</th>
+            <th className="p-4 text-left">X</th>
+            <th className="p-4 text-left">Y</th>
+            <th className="p-4 text-left">Z</th>
+            <th className="p-4 text-left">AA</th>
+            <th className="p-4 text-left">AB</th>
+            <th className="p-4 text-left">AC</th>
+            <th className="p-4 text-left">AD</th>
+            <th className="p-4 text-left">AE</th>
+            <th className="p-4 text-left">AF</th>
+            <th className="p-4 text-left">AG</th>
+            <th className="p-4 text-left">AH</th>
+            <th className="p-4 text-left">AI</th>
+            <th className="p-4 text-left">AJ</th>
+            <th className="p-4 text-left">AK</th>
+            <th className="p-4 text-left">AL</th>
+            <th className="p-4 text-left">AM</th>
+            <th className="p-4 text-left">AN</th>
+            <th className="p-4 text-left">AO</th>
+            <th className="p-4 text-left">AP</th>
+            <th className="p-4 text-left">AQ</th>
+            <th className="p-4 text-left">AR</th>
+            <th className="p-4 text-left">A_S</th>
+            <th className="p-4 text-left">A_T</th>
+            <th className="p-4 text-left">AU</th>
+            <th className="p-4 text-left">AV</th>
+            <th className="p-4 text-left">AW</th>
+            <th className="p-4 text-left">AX</th>
+            <th className="p-4 text-left">AY</th>
+            <th className="p-4 text-left">AZ</th>
+            <th className="p-4 text-left">BA</th>
+            <th className="p-4 text-left">BB</th>
+            <th className="p-4 text-left">BC</th>
+            <th className="p-4 text-left">BD</th>
+            <th className="p-4 text-left">BE</th>
+            <th className="p-4 text-left">BF</th>
+            <th className="p-4 text-left">BG</th>
+            <th className="p-4 text-left">BH</th>
+            <th className="p-4 text-left">BI</th>
+            <th className="p-4 text-left">BJ</th>
+            <th className="p-4 text-left">BK</th>
+            <th className="p-4 text-left">BL</th>
+            <th className="p-4 text-left">BM</th>
+            <th className="p-4 text-left">BN</th>
+            <th className="p-4 text-left">BO</th>
+            <th className="p-4 text-left">BP</th>
+            <th className="p-4 text-left">BQ</th>
+            <th className="p-4 text-left">BR</th>
+            <th className="p-4 text-left">BS</th>
+            <th className="p-4 text-left">BT</th>
               {/* <th className="p-4 text-left">SUBSIDIARY</th>
               <th className="p-4 text-left">EXTERNAL TICKET ID</th>
               <th className="p-4 text-left">CHANNEL</th>
@@ -216,6 +315,55 @@ const TicketTable: React.FC = () => {
                 <td className="p-4">{ticket.U}</td>
                 <td className="p-4">{ticket.V}</td>
                 <td className="p-4">{ticket.W}</td>
+                <td className="p-4">{ticket.X}</td>
+                <td className="p-4">{ticket.Y}</td>
+                <td className="p-4">{ticket.Z}</td>
+                <td className="p-4">{ticket.AA}</td>
+                <td className="p-4">{ticket.AB}</td>
+                <td className="p-4">{ticket.AC}</td>
+                <td className="p-4">{ticket.AD}</td>
+                <td className="p-4">{ticket.AE}</td>
+                <td className="p-4">{ticket.AF}</td>
+                <td className="p-4">{ticket.AG}</td>
+                <td className="p-4">{ticket.AH}</td>
+                <td className="p-4">{ticket.AI}</td>
+                <td className="p-4">{ticket.AJ}</td>
+                <td className="p-4">{ticket.AK}</td>
+                <td className="p-4">{ticket.AL}</td>
+                <td className="p-4">{ticket.AM}</td>
+                <td className="p-4">{ticket.AN}</td>
+                <td className="p-4">{ticket.AO}</td>
+                <td className="p-4">{ticket.AP}</td>
+                <td className="p-4">{ticket.AQ}</td>
+                <td className="p-4">{ticket.AR}</td>
+                <td className="p-4">{ticket.A_S}</td>
+                <td className="p-4">{ticket.A_T}</td>
+                <td className="p-4">{ticket.AU}</td>
+                <td className="p-4">{ticket.AV}</td>
+                <td className="p-4">{ticket.AW}</td>
+                <td className="p-4">{ticket.AX}</td>
+                <td className="p-4">{ticket.AY}</td>
+                <td className="p-4">{ticket.AZ}</td>
+                <td className="p-4">{ticket.BA}</td>
+                <td className="p-4">{ticket.BB}</td>
+                <td className="p-4">{ticket.BC}</td>
+                <td className="p-4">{ticket.BD}</td>
+                <td className="p-4">{ticket.BE}</td>
+                <td className="p-4">{ticket.BF}</td>
+                <td className="p-4">{ticket.BG}</td>
+                <td className="p-4">{ticket.BH}</td>
+                <td className="p-4">{ticket.BI}</td>
+                <td className="p-4">{ticket.BJ}</td>
+                <td className="p-4">{ticket.BK}</td>
+                <td className="p-4">{ticket.BL}</td>
+                <td className="p-4">{ticket.BM}</td>
+                <td className="p-4">{ticket.BN}</td>
+                <td className="p-4">{ticket.BO}</td>
+                <td className="p-4">{ticket.BP}</td>
+                <td className="p-4">{ticket.BQ}</td>
+                <td className="p-4">{ticket.BR}</td>
+                <td className="p-4">{ticket.BS}</td>
+                <td className="p-4">{ticket.BT}</td>
                 {/* <td className="p-4">{ticket.INCIDENT}</td>
                 <td className="p-4">{ticket.TTR_CUSTOMER}</td>
                 <td className="p-4">{ticket.SUMMARY}</td>
