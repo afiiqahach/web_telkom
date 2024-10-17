@@ -23,17 +23,17 @@ const Sidebar = () => {
     setIsReady(true);
   }, []);
 
-  const navigateToDashboard = () => {
-    router.push("/");
-  };
+  // const navigateToDashboard = () => {
+  //   router.push("/");
+  // };
 
   const navigateToTicket = () => {
     router.push("/ticket");
   };
 
   return (
-    <div className="fixed top-0 left-0 w-64 h-full bg-[#104C98] text-white shadow-lg">
-      <div className="flex items-center justify-start p-4 bg-white shadow-sm">
+    <div className="fixed left-0 w-64 h-full bg-[#104C98] text-white shadow-lg">
+      {/* <div className="flex items-center justify-start p-4 bg-white shadow-sm">
         <img src="img/logokecil.png" alt="Telkom" className="h-10" />
         <button
           className="text-2xl font-bold ps-4 text-[#104C98] hover:text-black"
@@ -41,7 +41,7 @@ const Sidebar = () => {
         >
           ARINA
         </button>
-      </div>
+      </div> */}
       <div className="p-4">
         {/* Sidebar items */}
         <div

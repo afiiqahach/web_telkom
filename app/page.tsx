@@ -29,7 +29,7 @@ const Dashboard = () => {
   }, [router]);
 
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex mt-20">
       <Sidebar />
       <div className="flex-1 ms-64 bg-gray-50">
         <Header />

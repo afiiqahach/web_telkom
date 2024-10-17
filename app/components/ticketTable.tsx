@@ -3,7 +3,6 @@
 import { SearchIcon } from "@heroicons/react/outline";
 import { useState, useEffect } from "react";
 
-// Definisikan tipe untuk ticket
 interface Ticket {
   A?: string; // Asumsikan ini adalah kolom tanggal
   B?: string;
@@ -82,10 +81,10 @@ interface Ticket {
 const TicketTable: React.FC = () => {
   const [data, setData] = useState<Ticket[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10); // Jumlah item per halaman (default 10)
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [startDate, setStartDate] = useState<string | null>(null);
   const [endDate, setEndDate] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState(''); // State untuk menyimpan query pencarian
+  const [searchQuery, setSearchQuery] = useState('');
 
   // Fetch data dari API
   useEffect(() => {
@@ -100,10 +99,18 @@ const TicketTable: React.FC = () => {
 
   // Filter data berdasarkan tanggal dan query pencarian
   const filteredData = data.filter((ticket) => {
-    // Pencarian berdasarkan nomor tiket, misalnya di kolom "A"
+    // Filter berdasarkan tanggal
+    let isWithinDateRange = true;
+    if (startDate && endDate && ticket.D) {
+      const ticketDate = new Date(ticket.D);
+      isWithinDateRange = ticketDate >= new Date(startDate) && ticketDate <= new Date(endDate);
+    }
+
+    // Filter berdasarkan pencarian
     const isMatchingSearch = ticket.A?.toLowerCase().includes(searchQuery.toLowerCase());
 
-    return isMatchingSearch;
+    // Kembalikan data yang sesuai dengan kedua filter
+    return isWithinDateRange && isMatchingSearch;
   });
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -124,14 +131,13 @@ const TicketTable: React.FC = () => {
   // Fungsi untuk menangani penekanan tombol Enter
   const handleSearchKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      // Mengatur halaman ke 1 saat melakukan pencarian
-      setCurrentPage(1);
+      setCurrentPage(1); // Reset ke halaman 1 saat melakukan pencarian
     }
   };
 
   return (
-    <div className="bg-white pl-12 shadow-lg rounded-lg mt-5">
-      <div className="flex justify-between items-center py-4">
+    <div className="bg-white pl-12 shadow-lg rounded-lg">
+      <div className="flex justify-between items-center py-4 mt-20">
         <div className="flex items-center">
           <div className="relative w-[300px]">
             <input
@@ -181,7 +187,6 @@ const TicketTable: React.FC = () => {
           </select>
         </div>
 
-        {/* Navigasi halaman dengan dropdown */}
         <div className="text-sm">
           <label htmlFor="pageSelect" className="mr-2">Page:</label>
           <select
@@ -205,7 +210,7 @@ const TicketTable: React.FC = () => {
         <table className="table-auto min-w-max">
           <thead>
             <tr className="bg-gray-100 text-sm">
-              <th className="p-4 text-left">A</th>
+            <th className="p-4 text-left">A</th>
               <th className="p-4 text-left">B</th>
               <th className="p-4 text-left">C</th>
               <th className="p-4 text-left">D</th>
@@ -357,7 +362,7 @@ const TicketTable: React.FC = () => {
               </tr>
             )) : (
               <tr>
-                <td colSpan={50} className="p-4 text-center">
+                <td colSpan={5} className="p-4 text-center">
                   No data available
                 </td>
               </tr>
