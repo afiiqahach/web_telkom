@@ -56,7 +56,7 @@ const Dashboard = () => {
               </button>
             </div>
             <div className="flex-shrink-0">
-              <img src="/img/arina.jpg" alt="ARINA Bot" className="h-64 rounded-lg shadow-lg" />
+              <img src="/img/arina.png" alt="ARINA Bot" className=" h-72" />
             </div>
           </div>
 

@@ -77,79 +77,49 @@ interface Ticket {
   BR?: string;
   BS?: string;
   BT?: string;
-
-  // SUBSIDIARY?: string;
-  // EXTERNAL_TICKET_ID?: string;
-  // CHANNEL?: string;
-  // CUSTOMER_TYPE?: string;
-  // CLOSED_BY?: string;
-  // CLOSED_REOPEN_BY?: string;
-  // CUSTOMER_ID: string;
-  // CUSTOMER_NAME: string;
-  // SERVICE_ID: string;
-  // SERVICE_NO: string;
-  // SLG?: string;
-  // TECHNOLOGY: string;
-  // LAPUL?: string;
-  // GAUL?: string;
-  // ONU_RX?: string;
-  // PENDING_REASON?: string;
-  // DATEMODIFIED?: string;
-  // INCIDENT_DOMAIN: string;
-  // REGION: string;
-  // SYMPTOM?: string;
-  // HIERARCHY_PATH?: string;
-  // SOLUTION?: string;
-  // DESCRIPTION_ACTUAL_SOLUTION?: string;
-  // KODE_PRODUK?: string;
-  // PERANGKAT?: string;
-  // TECHNICIAN?: string;
-  // DEVICE_NAME?: string;
-  // WORKLOG_SUMMARY?: string;
-  // CLASSIFICATION_FLAG?: string;
-  // REALM?: string;
-  // RELATED_TO_GAMAS?: string;
-  // TSC_RESULT?: string;
-  // SCC_RESULT?: string;
-  // TTR_AGENT?: string;
-  // TTR_MITRA?: string;
-  // TTR_NASIONAL?: string;
-  // TTR_PENDING?: string;
-  // TTR_REGION?: string;
-  // TTR_WITEL?: string;
-  // TTR_END_TO_END?: string;
-  // NOTE?: string;
-  // GUARANTE_STATUS?: string;
-  // RESOLVE_DATE?: string;
-  // SN_ONT?: string;
-  // TIPE_ONT?: string;
-  // MANUFACTURE_ONT?: string;
-  // IMPACTED_SITE?: string;
-  // CAUSE?: string;
-  // RESOLUTION?: string;
 }
 
 const TicketTable: React.FC = () => {
-  // 2. Tambahkan tipe Ticket[] pada useState
   const [data, setData] = useState<Ticket[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10); // Jumlah item per halaman (default 10)
 
+  // Fetch data dari API
   useEffect(() => {
-    //fetch ticket dari API
     fetch('http://localhost:5000/api/data')
       .then((response) => response.json())
-      .then((data: Ticket[]) => setData(data)) // Pastikan tipe data yang dikembalikan sesuai
+      .then((data: Ticket[]) => setData(data))
       .catch((error) => console.error('Error fetching data:', error));
   }, []);
+
+  // 2. Hitung total halaman
+  const totalPages = Math.ceil(data.length / itemsPerPage);
+
+  // 3. Data untuk halaman saat ini
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentData = data.slice(indexOfFirstItem, indexOfLastItem);
+
+  // 4. Fungsi untuk mengganti halaman
+  const handlePageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setCurrentPage(Number(event.target.value));
+  };
+
+  // 5. Fungsi untuk mengganti jumlah item per halaman
+  const handleItemsPerPageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setItemsPerPage(Number(event.target.value));
+    setCurrentPage(1); // Reset ke halaman 1 setiap kali jumlah item per halaman berubah
+  };
 
   return (
     <div className="bg-white pl-12 shadow-lg rounded-lg mt-5">
       <div className="flex justify-between items-center p-4">
-        <div className="flex items-center space-x-2">
-          <button className="p-2 border rounded-lg">
+        <div className="flex items-center">
+          {/* <button className="p-2 border rounded-lg">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v16a1 1 0 01-1 1H4a1 1 0 01-1-1V4z" />
             </svg>
-          </button>
+          </button> */}
           <div className="relative w-[440px]">
             <input
               type="text"
@@ -158,139 +128,122 @@ const TicketTable: React.FC = () => {
             />
             <SearchIcon className="absolute left-3 top-2.5 h-5 w-5 text-gray-500" />
           </div>
-          
         </div>
+
+        <div>
+          <label htmlFor="itemsPerPage" className="mr-2 ml-48">Show:</label>
+          <select
+            id="itemsPerPage"
+            value={itemsPerPage}
+            onChange={handleItemsPerPageChange}
+            className="border rounded-lg p-1"
+          >
+            <option value={10}>10</option>
+            <option value={50}>50</option>
+            <option value={100}>100</option>
+            <option value={500}>500</option>
+          </select>
+        </div>
+        {/* 6. Navigasi halaman dengan dropdown */}
+        <div>
+          <label htmlFor="pageSelect" className="mr-2">Page:</label>
+          <select
+            id="pageSelect"
+            value={currentPage}
+            onChange={handlePageChange}
+            className="border rounded-lg p-1"
+          >
+            {Array.from({ length: totalPages }, (_, index) => (
+              <option key={index} value={index + 1}>
+                {index + 1}
+              </option>
+            ))}
+          </select>
+        </div>
+
         <button className="bg-blue-500 text-white py-2 px-4 rounded-lg">+ Add customer</button>
       </div>
+
       <div className="overflow-x-auto">
         <table className="table-auto min-w-max">
           <thead>
             <tr className="bg-gray-100 text-sm">
-            <th className="p-4 text-left">A</th>
-            <th className="p-4 text-left">B</th>
-            <th className="p-4 text-left">C</th>
-            <th className="p-4 text-left">D</th>
-            <th className="p-4 text-left">E</th>
-            <th className="p-4 text-left">F</th>
-            <th className="p-4 text-left">G</th>
-            <th className="p-4 text-left">H</th>
-            <th className="p-4 text-left">I</th>
-            <th className="p-4 text-left">J</th>
-            <th className="p-4 text-left">K</th>
-            <th className="p-4 text-left">L</th>
-            <th className="p-4 text-left">M</th>
-            <th className="p-4 text-left">N</th>
-            <th className="p-4 text-left">O</th>
-            <th className="p-4 text-left">P</th>
-            <th className="p-4 text-left">Q</th>
-            <th className="p-4 text-left">R</th>
-            <th className="p-4 text-left">S</th>
-            <th className="p-4 text-left">T</th>
-            <th className="p-4 text-left">U</th>
-            <th className="p-4 text-left">V</th>
-            <th className="p-4 text-left">W</th>
-            <th className="p-4 text-left">X</th>
-            <th className="p-4 text-left">Y</th>
-            <th className="p-4 text-left">Z</th>
-            <th className="p-4 text-left">AA</th>
-            <th className="p-4 text-left">AB</th>
-            <th className="p-4 text-left">AC</th>
-            <th className="p-4 text-left">AD</th>
-            <th className="p-4 text-left">AE</th>
-            <th className="p-4 text-left">AF</th>
-            <th className="p-4 text-left">AG</th>
-            <th className="p-4 text-left">AH</th>
-            <th className="p-4 text-left">AI</th>
-            <th className="p-4 text-left">AJ</th>
-            <th className="p-4 text-left">AK</th>
-            <th className="p-4 text-left">AL</th>
-            <th className="p-4 text-left">AM</th>
-            <th className="p-4 text-left">AN</th>
-            <th className="p-4 text-left">AO</th>
-            <th className="p-4 text-left">AP</th>
-            <th className="p-4 text-left">AQ</th>
-            <th className="p-4 text-left">AR</th>
-            <th className="p-4 text-left">A_S</th>
-            <th className="p-4 text-left">A_T</th>
-            <th className="p-4 text-left">AU</th>
-            <th className="p-4 text-left">AV</th>
-            <th className="p-4 text-left">AW</th>
-            <th className="p-4 text-left">AX</th>
-            <th className="p-4 text-left">AY</th>
-            <th className="p-4 text-left">AZ</th>
-            <th className="p-4 text-left">BA</th>
-            <th className="p-4 text-left">BB</th>
-            <th className="p-4 text-left">BC</th>
-            <th className="p-4 text-left">BD</th>
-            <th className="p-4 text-left">BE</th>
-            <th className="p-4 text-left">BF</th>
-            <th className="p-4 text-left">BG</th>
-            <th className="p-4 text-left">BH</th>
-            <th className="p-4 text-left">BI</th>
-            <th className="p-4 text-left">BJ</th>
-            <th className="p-4 text-left">BK</th>
-            <th className="p-4 text-left">BL</th>
-            <th className="p-4 text-left">BM</th>
-            <th className="p-4 text-left">BN</th>
-            <th className="p-4 text-left">BO</th>
-            <th className="p-4 text-left">BP</th>
-            <th className="p-4 text-left">BQ</th>
-            <th className="p-4 text-left">BR</th>
-            <th className="p-4 text-left">BS</th>
-            <th className="p-4 text-left">BT</th>
-              {/* <th className="p-4 text-left">SUBSIDIARY</th>
-              <th className="p-4 text-left">EXTERNAL TICKET ID</th>
-              <th className="p-4 text-left">CHANNEL</th>
-              <th className="p-4 text-left">CUSTOMER TYPE</th>
-              <th className="p-4 text-left">CLOSED BY</th>
-              <th className="p-4 text-left">CLOSED / REOPEN by</th>
-              <th className="p-4 text-left">CUSTOMER ID</th>
-              <th className="p-4 text-left">CUSTOMER NAME</th>
-              <th className="p-4 text-left">SERVICE ID</th>
-              <th className="p-4 text-left">SERVICE NO</th>
-              <th className="p-4 text-left">SLG</th>
-              <th className="p-4 text-left">TECHNOLOGY</th>
-              <th className="p-4 text-left">LAPUL</th>
-              <th className="p-4 text-left">GAUL</th>
-              <th className="p-4 text-left">ONU RX</th>
-              <th className="p-4 text-left">PENDING REASON</th>
-              <th className="p-4 text-left">DATEMODIFIED</th>
-              <th className="p-4 text-left">INCIDENT DOMAIN</th>
-              <th className="p-4 text-left">REGION</th>
-              <th className="p-4 text-left">SYMPTOM</th>
-              <th className="p-4 text-left">HIERARCHY PATH</th>
-              <th className="p-4 text-left">SOLUTION</th>
-              <th className="p-4 text-left">DESCRIPTION ACTUAL SOLUTION</th>
-              <th className="p-4 text-left">KODE PRODUK</th>
-              <th className="p-4 text-left">PERANGKAT</th>
-              <th className="p-4 text-left">TECHNICIAN</th>
-              <th className="p-4 text-left">DEVICE NAME</th>
-              <th className="p-4 text-left">WORKLOG SUMMARY</th>
-              <th className="p-4 text-left">CLASSIFICATION FLAG</th>
-              <th className="p-4 text-left">REALM</th>
-              <th className="p-4 text-left">RELATED TO GAMAS</th>
-              <th className="p-4 text-left">TSC RESULT</th>
-              <th className="p-4 text-left">SCC RESULT</th>
-              <th className="p-4 text-left">TTR AGENT</th>
-              <th className="p-4 text-left">TTR MITRA</th>
-              <th className="p-4 text-left">TTR NASIONAL</th>
-              <th className="p-4 text-left">TTR PENDING</th>
-              <th className="p-4 text-left">TTR REGION</th>
-              <th className="p-4 text-left">TTR WITEL</th>
-              <th className="p-4 text-left">TTR END TO END</th>
-              <th className="p-4 text-left">NOTE</th>
-              <th className="p-4 text-left">GUARANTE STATUS</th>
-              <th className="p-4 text-left">RESOLVE DATE</th>
-              <th className="p-4 text-left">SN ONT</th>
-              <th className="p-4 text-left">TIPE ONT</th>
-              <th className="p-4 text-left">MANUFACTURE ONT</th>
-              <th className="p-4 text-left">IMPACTED SITE</th>
-              <th className="p-4 text-left">CAUSE</th>
-              <th className="p-4 text-left">RESOLUTION</th> */}
+              <th className="p-4 text-left">A</th>
+              <th className="p-4 text-left">B</th>
+              <th className="p-4 text-left">C</th>
+              <th className="p-4 text-left">D</th>
+              <th className="p-4 text-left">E</th>
+              <th className="p-4 text-left">F</th>
+              <th className="p-4 text-left">G</th>
+              <th className="p-4 text-left">H</th>
+              <th className="p-4 text-left">I</th>
+              <th className="p-4 text-left">J</th>
+              <th className="p-4 text-left">K</th>
+              <th className="p-4 text-left">L</th>
+              <th className="p-4 text-left">M</th>
+              <th className="p-4 text-left">N</th>
+              <th className="p-4 text-left">O</th>
+              <th className="p-4 text-left">P</th>
+              <th className="p-4 text-left">Q</th>
+              <th className="p-4 text-left">R</th>
+              <th className="p-4 text-left">S</th>
+              <th className="p-4 text-left">T</th>
+              <th className="p-4 text-left">U</th>
+              <th className="p-4 text-left">V</th>
+              <th className="p-4 text-left">W</th>
+              <th className="p-4 text-left">X</th>
+              <th className="p-4 text-left">Y</th>
+              <th className="p-4 text-left">Z</th>
+              <th className="p-4 text-left">AA</th>
+              <th className="p-4 text-left">AB</th>
+              <th className="p-4 text-left">AC</th>
+              <th className="p-4 text-left">AD</th>
+              <th className="p-4 text-left">AE</th>
+              <th className="p-4 text-left">AF</th>
+              <th className="p-4 text-left">AG</th>
+              <th className="p-4 text-left">AH</th>
+              <th className="p-4 text-left">AI</th>
+              <th className="p-4 text-left">AJ</th>
+              <th className="p-4 text-left">AK</th>
+              <th className="p-4 text-left">AL</th>
+              <th className="p-4 text-left">AM</th>
+              <th className="p-4 text-left">AN</th>
+              <th className="p-4 text-left">AO</th>
+              <th className="p-4 text-left">AP</th>
+              <th className="p-4 text-left">AQ</th>
+              <th className="p-4 text-left">AR</th>
+              <th className="p-4 text-left">A_S</th>
+              <th className="p-4 text-left">A_T</th>
+              <th className="p-4 text-left">AU</th>
+              <th className="p-4 text-left">AV</th>
+              <th className="p-4 text-left">AW</th>
+              <th className="p-4 text-left">AX</th>
+              <th className="p-4 text-left">AY</th>
+              <th className="p-4 text-left">AZ</th>
+              <th className="p-4 text-left">BA</th>
+              <th className="p-4 text-left">BB</th>
+              <th className="p-4 text-left">BC</th>
+              <th className="p-4 text-left">BD</th>
+              <th className="p-4 text-left">BE</th>
+              <th className="p-4 text-left">BF</th>
+              <th className="p-4 text-left">BG</th>
+              <th className="p-4 text-left">BH</th>
+              <th className="p-4 text-left">BI</th>
+              <th className="p-4 text-left">BJ</th>
+              <th className="p-4 text-left">BK</th>
+              <th className="p-4 text-left">BL</th>
+              <th className="p-4 text-left">BM</th>
+              <th className="p-4 text-left">BN</th>
+              <th className="p-4 text-left">BO</th>
+              <th className="p-4 text-left">BP</th>
+              <th className="p-4 text-left">BQ</th>
+              <th className="p-4 text-left">BR</th>
+              <th className="p-4 text-left">BS</th>
+              <th className="p-4 text-left">BT</th>
             </tr>
           </thead>
           <tbody>
-            {data.map((ticket, index) => (
+            {currentData.map((ticket, index) => (
               <tr key={index}>
                 <td className="p-4">{ticket.A}</td>
                 <td className="p-4">{ticket.B}</td>
@@ -364,81 +317,12 @@ const TicketTable: React.FC = () => {
                 <td className="p-4">{ticket.BR}</td>
                 <td className="p-4">{ticket.BS}</td>
                 <td className="p-4">{ticket.BT}</td>
-                {/* <td className="p-4">{ticket.INCIDENT}</td>
-                <td className="p-4">{ticket.TTR_CUSTOMER}</td>
-                <td className="p-4">{ticket.SUMMARY}</td>
-                <td className="p-4">{ticket.REPORTED_DATE}</td>
-                <td className="p-4">{ticket.OWNER_GROUP}</td>
-                <td className="p-4">{ticket.OWNER}</td>
-                <td className="p-4">{ticket.CUSTOMER_SEGMENT}</td>
-                <td className="p-4">{ticket.SERVICE_TYPE}</td>
-                <td className="p-4">{ticket.WITEL}</td>
-                <td className="p-4">{ticket.WORKZONE}</td>
-                <td className="p-4">{ticket.STATUS}</td>
-                <td className="p-4">{ticket.STATUS_DATE}</td>
-                <td className="p-4">{ticket.TICKET_ID_GAMAS}</td>
-                <td className="p-4">{ticket.REPORTED_BY}</td>
-                <td className="p-4">{ticket.CONTACT_PHONE}</td>
-                <td className="p-4">{ticket.CONTACT_NAME}</td>
-                <td className="p-4">{ticket.CONTACT_EMAIL}</td>
-                <td className="p-4">{ticket.BOOKING_DATE}</td>
-                <td className="p-4">{ticket.DESCRIPTION_ASSIGNMENT}</td>
-                <td className="p-4">{ticket.REPORTED_PRIORITY}</td>
-                <td className="p-4">{ticket.SOURCE_TICKET}</td> */}
-                {/* <td className="p-4">{ticket.SUBSIDIARY}</td>
-                <td className="p-4">{ticket.EXTERNAL_TICKET_ID}</td>
-                <td className="p-4">{ticket.CHANNEL}</td>
-                <td className="p-4">{ticket.CUSTOMER_TYPE}</td>
-                <td className="p-4">{ticket.CLOSED_BY}</td>
-                <td className="p-4">{ticket.CLOSED_REOPEN_BY}</td>
-                <td className="p-4">{ticket.CUSTOMER_ID}</td>
-                <td className="p-4">{ticket.CUSTOMER_NAME}</td>
-                <td className="p-4">{ticket.SERVICE_ID}</td>
-                <td className="p-4">{ticket.SERVICE_NO}</td>
-                <td className="p-4">{ticket.SLG}</td>
-                <td className="p-4">{ticket.TECHNOLOGY}</td>
-                <td className="p-4">{ticket.LAPUL}</td>
-                <td className="p-4">{ticket.GAUL}</td>
-                <td className="p-4">{ticket.ONU_RX}</td>
-                <td className="p-4">{ticket.PENDING_REASON}</td>
-                <td className="p-4">{ticket.DATEMODIFIED}</td>
-                <td className="p-4">{ticket.INCIDENT_DOMAIN}</td>
-                <td className="p-4">{ticket.REGION}</td>
-                <td className="p-4">{ticket.SYMPTOM}</td>
-                <td className="p-4">{ticket.HIERARCHY_PATH}</td>
-                <td className="p-4">{ticket.SOLUTION}</td>
-                <td className="p-4">{ticket.DESCRIPTION_ACTUAL_SOLUTION}</td>
-                <td className="p-4">{ticket.KODE_PRODUK}</td>
-                <td className="p-4">{ticket.PERANGKAT}</td>
-                <td className="p-4">{ticket.TECHNICIAN}</td>
-                <td className="p-4">{ticket.DEVICE_NAME}</td>
-                <td className="p-4">{ticket.WORKLOG_SUMMARY}</td>
-                <td className="p-4">{ticket.CLASSIFICATION_FLAG}</td>
-                <td className="p-4">{ticket.REALM}</td>
-                <td className="p-4">{ticket.RELATED_TO_GAMAS}</td>
-                <td className="p-4">{ticket.TSC_RESULT}</td>
-                <td className="p-4">{ticket.SCC_RESULT}</td>
-                <td className="p-4">{ticket.TTR_AGENT}</td>
-                <td className="p-4">{ticket.TTR_MITRA}</td>
-                <td className="p-4">{ticket.TTR_NASIONAL}</td>
-                <td className="p-4">{ticket.TTR_PENDING}</td>
-                <td className="p-4">{ticket.TTR_REGION}</td>
-                <td className="p-4">{ticket.TTR_WITEL}</td>
-                <td className="p-4">{ticket.TTR_END_TO_END}</td>
-                <td className="p-4">{ticket.NOTE}</td>
-                <td className="p-4">{ticket.GUARANTE_STATUS}</td>
-                <td className="p-4">{ticket.RESOLVE_DATE}</td>
-                <td className="p-4">{ticket.SN_ONT}</td>
-                <td className="p-4">{ticket.TIPE_ONT}</td>
-                <td className="p-4">{ticket.MANUFACTURE_ONT}</td>
-                <td className="p-4">{ticket.IMPACTED_SITE}</td>
-                <td className="p-4">{ticket.CAUSE}</td>
-                <td className="p-4">{ticket.RESOLUTION}</td> */}
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+
     </div>
   );
 };
