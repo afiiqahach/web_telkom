@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronDown,
@@ -15,8 +15,13 @@ const Sidebar = () => {
   const [incidentOpen, setIncidentOpen] = useState(false);
   const [saldoOpen, setSaldoOpen] = useState(false);
   const [requestOpen, setRequestOpen] = useState(false);
+  const [isReady, setIsReady] = useState(true); // Mengatur komponen siap sejak awal
 
   const router = useRouter();
+
+  useEffect(() => {
+    setIsReady(true);
+  }, []);
 
   const navigateToDashboard = () => {
     router.push("/");
@@ -47,16 +52,26 @@ const Sidebar = () => {
         </div>
 
         {/* Incident Ticket with dropdown */}
-        <div
-          className="flex items-center mb-4 p-2 hover:bg-[#083d6b] rounded-md cursor-pointer"
-          onClick={() => setIncidentOpen(!incidentOpen)}
-        >
-          <span>Incident Ticket</span>
-          <FontAwesomeIcon
-            icon={incidentOpen ? faChevronDown : faChevronRight}
-            className="ml-2"
-          />
-        </div>
+        {isReady && (
+          <div
+            className="flex items-center mb-4 p-2 hover:bg-[#083d6b] rounded-md cursor-pointer"
+            onClick={() => setIncidentOpen(!incidentOpen)}
+            style={{ width: "100%", height: "40px" }}  // Fixed width and height
+          >
+            <span>Incident Ticket</span>
+            <div style={{ width: "14px", height: "14px", display: "inline-block", marginLeft: "10px" }}>
+              <FontAwesomeIcon
+                icon={incidentOpen ? faChevronDown : faChevronRight}
+                style={{
+                  fontSize: "14px",
+                  width: "100%",
+                  height: "100%",
+                  lineHeight: "14px",
+                }} // Set size explicitly
+              />
+            </div>
+          </div>
+        )}
 
         {incidentOpen && (
           <div className="ml-2">
@@ -64,30 +79,43 @@ const Sidebar = () => {
             <div
               className="flex items-center mb-4 p-2 hover:bg-[#083d6b] rounded-md cursor-pointer"
               onClick={() => setSaldoOpen(!saldoOpen)}
+              style={{ width: "100%", height: "40px" }}  // Fixed width and height
             >
               <span>Saldo Ticket</span>
-              <FontAwesomeIcon
-                icon={saldoOpen ? faChevronDown : faChevronRight}
-                className="ml-2"
-              />
+              <div style={{ width: "14px", height: "14px", display: "inline-block", marginLeft: "10px" }}>
+                <FontAwesomeIcon
+                  icon={saldoOpen ? faChevronDown : faChevronRight}
+                  style={{
+                    fontSize: "14px",
+                    width: "100%",
+                    height: "100%",
+                    lineHeight: "14px",
+                  }} // Set size explicitly
+                />
+              </div>
             </div>
 
             {saldoOpen && (
               <div className="ml-4 flex flex-col items-start">
                 <button className="mb-4 p-2 hover:bg-[#083d6b] rounded-md">
-                  <FontAwesomeIcon icon={faInbox} className="mr-2" /> Inbox Ticket Draft
+                  <FontAwesomeIcon icon={faInbox} className="mr-2" style={{ fontSize: "14px" }} />
+                  Inbox Ticket Draft
                 </button>
                 <button className="mb-4 p-2 hover:bg-[#083d6b] rounded-md">
-                  <FontAwesomeIcon icon={faInbox} className="mr-2" /> Inbox Ticket Loker
+                  <FontAwesomeIcon icon={faInbox} className="mr-2" style={{ fontSize: "14px" }} />
+                  Inbox Ticket Loker
                 </button>
                 <button className="mb-4 p-2 hover:bg-[#083d6b] rounded-md">
-                  <FontAwesomeIcon icon={faInbox} className="mr-2" /> Inbox Ticket Pribadi
+                  <FontAwesomeIcon icon={faInbox} className="mr-2" style={{ fontSize: "14px" }} />
+                  Inbox Ticket Pribadi
                 </button>
                 <button className="mb-4 p-2 hover:bg-[#083d6b] rounded-md">
-                  <FontAwesomeIcon icon={faInbox} className="mr-2" /> Ticket Imbas Gamas
+                  <FontAwesomeIcon icon={faInbox} className="mr-2" style={{ fontSize: "14px" }} />
+                  Ticket Imbas Gamas
                 </button>
                 <button className="mb-4 p-2 hover:bg-[#083d6b] rounded-md">
-                  <FontAwesomeIcon icon={faInbox} className="mr-2" /> Inbox Ticket Proactive
+                  <FontAwesomeIcon icon={faInbox} className="mr-2" style={{ fontSize: "14px" }} />
+                  Inbox Ticket Proactive
                 </button>
               </div>
             )}
@@ -96,21 +124,35 @@ const Sidebar = () => {
             <div
               className="flex items-center mb-4 p-2 hover:bg-[#083d6b] rounded-md cursor-pointer"
               onClick={() => setRequestOpen(!requestOpen)}
+              style={{ width: "100%", height: "40px" }}  // Fixed width and height
             >
               <span>Request</span>
-              <FontAwesomeIcon
-                icon={requestOpen ? faChevronDown : faChevronRight}
-                className="ml-2"
-              />
+              <div style={{ width: "14px", height: "14px", display: "inline-block", marginLeft: "10px" }}>
+                <FontAwesomeIcon
+                  icon={requestOpen ? faChevronDown : faChevronRight}
+                  style={{
+                    fontSize: "14px",
+                    width: "100%",
+                    height: "100%",
+                    lineHeight: "14px",
+                  }} // Set size explicitly
+                />
+              </div>
             </div>
 
             {requestOpen && (
               <div className="ml-4">
                 <button className="mb-4 p-2 hover:bg-[#083d6b] rounded-md">
-                  <FontAwesomeIcon icon={faList} className="mr-2" /> All Ticket List
+                  <FontAwesomeIcon icon={faList} className="mr-2" style={{ fontSize: "14px" }} />
+                  All Ticket List
                 </button>
                 <button className="mb-4 p-2 hover:bg-[#083d6b] rounded-md">
-                  <FontAwesomeIcon icon={faCheckCircle} className="mr-2" /> Closed Ticket List
+                  <FontAwesomeIcon
+                    icon={faCheckCircle}
+                    className="mr-2"
+                    style={{ fontSize: "14px" }}
+                  />
+                  Closed Ticket List
                 </button>
               </div>
             )}

@@ -12,7 +12,6 @@ const Header = () => {
   const router = useRouter();
 
   useEffect(() => {
-    // Mendapatkan informasi pengguna yang sedang login
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         setUser({
@@ -20,50 +19,47 @@ const Header = () => {
           email: currentUser.email,
         });
       } else {
-        setUser(null); // Tidak ada pengguna yang login
+        setUser(null); 
       }
     });
-
-    return () => unsubscribe(); // Bersihkan listener saat komponen di-unmount
+    return () => unsubscribe();
   }, []);
 
-  // Fungsi untuk Sign Out dan mengarahkan ke halaman login
   const handleSignOut = async () => {
     try {
-      await signOut(auth); // Proses logout dengan Firebase
-      router.push('/login'); // Arahkan pengguna ke halaman login
+      await signOut(auth);
+      router.push('/login');
     } catch (error) {
       console.error("Error signing out: ", error);
     }
   };
 
   const handleLoginRedirect = () => {
-    router.push('/login'); // Arahkan ke halaman login
+    router.push('/login');
   };
 
   return (
-    <div className="flex justify-between items-center px-16 py-2 border-b">
+    <div className="flex justify-between items-center px-16 py-2 border-b shadow-md bg-white">
       {/* Search Input */}
       <div className="relative w-[440px]">
         <input 
           type="text" 
           placeholder="Search in site" 
-          className="border rounded-lg p-2 pl-10 pr-4 w-full" // Padding left untuk ikon pencarian
+          className="border rounded-lg p-2 pl-10 pr-4 w-full shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" 
         />
-        <SearchIcon className="absolute left-3 top-2.5 h-5 w-5 text-gray-500" />
+        <SearchIcon className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
       </div>
 
       {/* Profil dan Nama */}
-      <div className="relative border border-gray-300 rounded-lg w-60 ">
+      <div className="relative border border-gray-300 rounded-lg w-60 bg-white shadow-sm">
         <div
-          className="w-60 h-[58px] relative cursor-pointer flex items-center gap-20 hover:bg-gray-200"
-          onClick={() => setDropdownOpen(!dropdownOpen)} // Toggle dropdown
+          className="w-60 h-[58px] relative cursor-pointer flex items-center gap-20 hover:bg-gray-100 transition-all duration-300 rounded-lg"
+          onClick={() => setDropdownOpen(!dropdownOpen)} 
         >
-          <div className="flex items-center hover:bg-gray-200 rounded-lg">
-            {/* Ikon Profil */}
+          <div className="flex items-center">
             <UserIcon className="h-10 w-10 text-black ml-2" />
-            <div className="left-[73px] top-[11px] ml-4">
-              <div className="text-[#232738] text-sm font-semibold ">
+            <div className="ml-4">
+              <div className="text-[#232738] text-sm font-semibold">
                 {user ? (user.displayName || user.email) : "Guest"}
               </div>
               <div className="text-[#555353] text-xs font-medium">{user ? "User" : "Admin"}</div>
@@ -74,18 +70,18 @@ const Header = () => {
 
         {/* Dropdown Menu */}
         {dropdownOpen && (
-          <div className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg z-10">
+          <div className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg z-10 transition-all duration-300">
             {user ? (
               <button
-                onClick={handleSignOut} // Fungsi Sign Out
-                className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+                onClick={handleSignOut} 
+                className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 transition-all"
               >
                 Sign Out
               </button>
             ) : (
               <button
-                onClick={handleLoginRedirect} // Fungsi untuk mengarahkan ke login
-                className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+                onClick={handleLoginRedirect} 
+                className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 transition-all"
               >
                 Login
               </button>
