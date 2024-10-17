@@ -3,9 +3,9 @@
 import { SearchIcon } from "@heroicons/react/outline";
 import { useState, useEffect } from "react";
 
-// 1. Definisikan tipe untuk ticket
+// Definisikan tipe untuk ticket
 interface Ticket {
-  A?: string;
+  A?: string; // Asumsikan ini adalah kolom tanggal
   B?: string;
   C?: string;
   D?: string;
@@ -83,6 +83,9 @@ const TicketTable: React.FC = () => {
   const [data, setData] = useState<Ticket[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10); // Jumlah item per halaman (default 10)
+  const [startDate, setStartDate] = useState<string | null>(null);
+  const [endDate, setEndDate] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState(''); // State untuk menyimpan query pencarian
 
   // Fetch data dari API
   useEffect(() => {
@@ -92,46 +95,79 @@ const TicketTable: React.FC = () => {
       .catch((error) => console.error('Error fetching data:', error));
   }, []);
 
-  // 2. Hitung total halaman
+  // Hitung total halaman
   const totalPages = Math.ceil(data.length / itemsPerPage);
 
-  // 3. Data untuk halaman saat ini
+  // Filter data berdasarkan tanggal dan query pencarian
+  const filteredData = data.filter((ticket) => {
+    // Pencarian berdasarkan nomor tiket, misalnya di kolom "A"
+    const isMatchingSearch = ticket.A?.toLowerCase().includes(searchQuery.toLowerCase());
+
+    return isMatchingSearch;
+  });
+
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentData = data.slice(indexOfFirstItem, indexOfLastItem);
+  const currentData = filteredData.slice(indexOfFirstItem, indexOfLastItem);
 
-  // 4. Fungsi untuk mengganti halaman
+  // Fungsi untuk menangani perubahan halaman
   const handlePageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setCurrentPage(Number(event.target.value));
   };
 
-  // 5. Fungsi untuk mengganti jumlah item per halaman
+  // Fungsi untuk mengganti jumlah item per halaman
   const handleItemsPerPageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setItemsPerPage(Number(event.target.value));
     setCurrentPage(1); // Reset ke halaman 1 setiap kali jumlah item per halaman berubah
   };
 
+  // Fungsi untuk menangani penekanan tombol Enter
+  const handleSearchKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      // Mengatur halaman ke 1 saat melakukan pencarian
+      setCurrentPage(1);
+    }
+  };
+
   return (
     <div className="bg-white pl-12 shadow-lg rounded-lg mt-5">
-      <div className="flex justify-between items-center p-4">
+      <div className="flex justify-between items-center py-4">
         <div className="flex items-center">
-          {/* <button className="p-2 border rounded-lg">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v16a1 1 0 01-1 1H4a1 1 0 01-1-1V4z" />
-            </svg>
-          </button> */}
-          <div className="relative w-[440px]">
+          <div className="relative w-[300px]">
             <input
               type="text"
-              className="border rounded-lg p-2 pl-10 pr-4"
-              placeholder="Search..."
+              className="border rounded-lg p-2 pl-10 pr-4 text-sm"
+              placeholder="Search by ticket number..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)} // Update query pencarian
+              onKeyPress={handleSearchKeyPress} // Tangani penekanan tombol Enter
             />
             <SearchIcon className="absolute left-3 top-2.5 h-5 w-5 text-gray-500" />
           </div>
         </div>
 
-        <div>
-          <label htmlFor="itemsPerPage" className="mr-2 ml-48">Show:</label>
+        <div className="text-sm">
+          <label htmlFor="startDate" className="mr-2">Start Date:</label>
+          <input
+            type="date"
+            id="startDate"
+            value={startDate || ""}
+            onChange={(e) => setStartDate(e.target.value)}
+            className="border rounded-lg p-1 mr-4"
+          />
+
+          <label htmlFor="endDate" className="mr-2">End Date:</label>
+          <input
+            type="date"
+            id="endDate"
+            value={endDate || ""}
+            onChange={(e) => setEndDate(e.target.value)}
+            className="border rounded-lg p-1 text-sm"
+          />
+        </div>
+
+        <div className="text-sm">
+          <label htmlFor="itemsPerPage" className="mr-2 ml-14">Show:</label>
           <select
             id="itemsPerPage"
             value={itemsPerPage}
@@ -144,8 +180,9 @@ const TicketTable: React.FC = () => {
             <option value={500}>500</option>
           </select>
         </div>
-        {/* 6. Navigasi halaman dengan dropdown */}
-        <div>
+
+        {/* Navigasi halaman dengan dropdown */}
+        <div className="text-sm">
           <label htmlFor="pageSelect" className="mr-2">Page:</label>
           <select
             id="pageSelect"
@@ -161,7 +198,7 @@ const TicketTable: React.FC = () => {
           </select>
         </div>
 
-        <button className="bg-blue-500 text-white py-2 px-4 rounded-lg">+ Add customer</button>
+        <button className="bg-blue-500 text-white py-2 px-4 rounded-lg text-sm mr-7">+ Add customer</button>
       </div>
 
       <div className="overflow-x-auto">
@@ -243,8 +280,8 @@ const TicketTable: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {currentData.map((ticket, index) => (
-              <tr key={index}>
+            {currentData.length > 0 ? currentData.map((ticket, index) => (
+              <tr key={index} className="border-b text-sm">
                 <td className="p-4">{ticket.A}</td>
                 <td className="p-4">{ticket.B}</td>
                 <td className="p-4">{ticket.C}</td>
@@ -318,11 +355,16 @@ const TicketTable: React.FC = () => {
                 <td className="p-4">{ticket.BS}</td>
                 <td className="p-4">{ticket.BT}</td>
               </tr>
-            ))}
+            )) : (
+              <tr>
+                <td colSpan={50} className="p-4 text-center">
+                  No data available
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
-
     </div>
   );
 };

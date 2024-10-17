@@ -59,14 +59,14 @@ const Sidebar = () => {
             style={{ width: "100%", height: "40px" }}  // Fixed width and height
           >
             <span>Incident Ticket</span>
-            <div style={{ width: "14px", height: "14px", display: "inline-block", marginLeft: "10px" }}>
+            <div style={{ width: "14px", height: "24px", display: "inline-block", marginLeft: "10px" }}>
               <FontAwesomeIcon
                 icon={incidentOpen ? faChevronDown : faChevronRight}
                 style={{
                   fontSize: "14px",
                   width: "100%",
-                  height: "100%",
-                  lineHeight: "14px",
+                  // height: "100%",
+                  // lineHeight: "14px",
                 }} // Set size explicitly
               />
             </div>
@@ -86,7 +86,7 @@ const Sidebar = () => {
                 <FontAwesomeIcon
                   icon={saldoOpen ? faChevronDown : faChevronRight}
                   style={{
-                    fontSize: "14px",
+                    fontSize: "1px",
                     width: "100%",
                     height: "100%",
                     lineHeight: "14px",
@@ -96,7 +96,7 @@ const Sidebar = () => {
             </div>
 
             {saldoOpen && (
-              <div className="ml-4 flex flex-col items-start">
+              <div className=" ml-1 flex flex-col items-start">
                 <button className="mb-4 p-2 hover:bg-[#083d6b] rounded-md">
                   <FontAwesomeIcon icon={faInbox} className="mr-2" style={{ fontSize: "14px" }} />
                   Inbox Ticket Draft
