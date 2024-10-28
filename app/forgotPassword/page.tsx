@@ -36,7 +36,7 @@ export default function ForgotPassword() {
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded-lg border-t-4 border-red-600 shadow-lg max-w-md w-full">
+      <div className="bg-white p-8 rounded-lg border-t-4 border-[#104C98] shadow-lg max-w-md w-full">
         <h2 className="text-center text-[#2e2e2e] text-[32px] font-semibold">
           Reset Password
         </h2>
@@ -59,7 +59,7 @@ export default function ForgotPassword() {
           </div>
           <button
             type="submit"
-            className="w-full py-3 bg-red-500 text-white rounded-lg hover:bg-red-600"
+            className="w-full py-3 bg-[#104C98] text-white rounded-lg hover:bg-blue-700"
           >
             Send Reset Link
           </button>
@@ -69,7 +69,7 @@ export default function ForgotPassword() {
 
         <p className="text-center text-gray-600">
           Remember your password?{' '}
-          <button onClick={() => router.push('/login')} className="text-red-500 font-semibold hover:underline ml-1">
+          <button onClick={() => router.push('/login')} className="text-[#104C98] font-semibold hover:underline ml-1">
             Sign In
           </button>
         </p>
