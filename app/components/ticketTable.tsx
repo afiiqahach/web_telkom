@@ -77,6 +77,9 @@ interface Ticket {
   RESOLUTION?: string;
   NOTES_ESKALASI?: string;
   RK_INFORMATION?: string;
+  EXTERNAL_TICKET_TIER_3: string;
+  CUSTOMER_CATEGORY: string;
+  CLASSIFICATION_PATH: string;
 }
 
 const TicketTable: React.FC = () => {
@@ -283,6 +286,9 @@ const TicketTable: React.FC = () => {
               <th className="p-4">RESOLUTION</th>
               <th className="p-4">NOTES_ESKALASI</th>
               <th className="p-4">RK_INFORMATION</th>
+              <th className="p-4">EXTERNAL_TICKET_TIER_3</th>
+              <th className="p-4">CUSTOMER_CATEGORY</th>
+              <th className="p-4">CLASSIFICATION_PATH</th>
 
             </tr>
           </thead>
@@ -362,6 +368,9 @@ const TicketTable: React.FC = () => {
                 <td className="p-4">{ticket.RESOLUTION || '-'}</td>
                 <td className="p-4">{ticket.NOTES_ESKALASI || '-'}</td>
                 <td className="p-4">{ticket.RK_INFORMATION || '-'}</td>
+                <td className="p-4">{ticket.EXTERNAL_TICKET_TIER_3 || '-'}</td>
+                <td className="p-4">{ticket.CUSTOMER_CATEGORY || '-'}</td>
+                <td className="p-4">{ticket.CLASSIFICATION_PATH || '-'}</td>
               </tr>
             )) : (
               <tr>
