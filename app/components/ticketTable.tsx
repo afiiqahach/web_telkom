@@ -213,7 +213,7 @@ const TicketTable: React.FC = () => {
         <table className="table-auto min-w-max">
           <thead>
             <tr className="bg-gray-100 text-sm text-center">
-              <th className="p-4">INC_KEY</th>
+              {/* <th className="p-4">INC_KEY</th> */}
               <th className="p-4">INCIDENT</th>
               <th className="p-4">TTR_CUSTOMER</th>
               <th className="p-4">SUMMARY</th>
@@ -295,7 +295,7 @@ const TicketTable: React.FC = () => {
           <tbody>
             {currentData.length > 0 ? currentData.map((ticket, index) => (
               <tr key={index} className="border-b text-sm text-center">
-                <td className="p-4">{ticket.INC_KEY || '-'}</td>
+                {/* <td className="p-4">{ticket.INC_KEY || '-'}</td> */}
                 <td className="p-4">{ticket.INCIDENT || '-'}</td>
                 <td className="p-4">{ticket.TTR_CUSTOMER || '-'}</td>
                 <td className="p-4">{ticket.SUMMARY || '-'}</td>
