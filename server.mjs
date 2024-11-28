@@ -30,6 +30,8 @@ app.get('/api/data', (req, res) => {
   });
 });
 
+app.get('/')
+
 // Menjalankan server
 app.listen(5000, () => {
   console.log('Server running on port 5000');
