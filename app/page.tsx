@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '@/lib/firebaseConfig'; // Pastikan ini mengarah ke konfigurasi Firebase Anda
+import { auth } from '@/lib/firebaseConfig.js'; // Pastikan ini mengarah ke konfigurasi Firebase Anda
 import Sidebar from '../app/components/sidebar';
 import Header from '../app/components/header';
 import Footer from '../app/components/footer';

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { SearchIcon, UserIcon } from '@heroicons/react/outline';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
-import { auth } from '@/lib/firebaseConfig';
+import { auth } from '@/lib/firebaseConfig.js';
 import NotificationDropdown from './NotificationDropdown';
 
 const Header = () => {

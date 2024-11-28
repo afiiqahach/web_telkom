@@ -21,6 +21,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "fetchSpreadsheet.mjs"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "fetchSpreadsheet.mjs", "lib/googleSheets.mjs", "lib/configFirebase.mjs"],
   "exclude": ["node_modules"]
 }
