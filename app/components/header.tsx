@@ -9,7 +9,8 @@ import NotificationDropdown from './NotificationDropdown';
 
 const Header = () => {
   const [user, setUser] = useState<{ displayName: string | null; email: string | null } | null>(null);
-  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false); // Kontrol visibilitas dropdown profil
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState(''); // State untuk input search
   const router = useRouter();
 
   useEffect(() => {
@@ -28,16 +29,19 @@ const Header = () => {
       await signOut(auth);
       router.push('/login');
     } catch (error) {
-      console.error('Error signing out: ', error);
+      console.error('Error signing out:', error);
     }
   };
 
-  const handleLoginRedirect = () => {
-    router.push('/login');
-  };
+  const handleLoginRedirect = () => router.push('/login');
+  const navigateToDashboard = () => router.push('/');
 
-  const navigateToDashboard = () => {
-    router.push('/');
+  // Handler untuk search
+  const handleSearch = (event: React.FormEvent) => {
+    event.preventDefault(); // Mencegah reload
+    if (searchQuery.trim()) {
+      router.push(`/search?query=${encodeURIComponent(searchQuery)}`);
+    }
   };
 
   return (
@@ -54,14 +58,18 @@ const Header = () => {
       </div>
 
       {/* Search Bar */}
-      <div className="relative w-[440px]">
+      <form onSubmit={handleSearch} className="relative w-[440px]">
         <input
           type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search in site"
           className="border rounded-lg p-2 pl-10 pr-4 w-full shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
         />
-        <SearchIcon className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-      </div>
+        <button type="submit" className="absolute left-3 top-2.5">
+          <SearchIcon className="h-5 w-5 text-gray-400" />
+        </button>
+      </form>
 
       {/* Profil dan Notifikasi */}
       <div className="flex items-center gap-4">

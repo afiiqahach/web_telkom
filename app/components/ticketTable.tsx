@@ -215,7 +215,7 @@ const TicketTable: React.FC = () => {
             <tr className="bg-gray-100 text-sm text-center">
               {/* <th className="p-4">INC_KEY</th> */}
               <th className="p-4">INCIDENT</th>
-              <th className="p-4">TTR_CUSTOMER</th>
+              <th className="p-4">TTR CUSTOMER</th>
               <th className="p-4">SUMMARY</th>
               <th className="p-4">REPORTED_DATE</th>
               <th className="p-4">OWNER_GROUP</th>
