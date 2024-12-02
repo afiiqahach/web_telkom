@@ -1,46 +1,58 @@
 import axios from 'axios';
-import { initializeApp } from 'firebase/app';
-import { getDatabase, ref, set } from 'firebase/database';
+import admin from 'firebase-admin';
 import cron from 'node-cron';
 
-// Firebase Config
-const firebaseConfig = {
-  apiKey: "AIzaSyAsztSOEvQF7lWFa1h0gohWwSzMH1sCOcg",
-  authDomain: "http://arina-151102.firebaseapp.com",
-  databaseURL: "https://arina-151102-default-rtdb.firebaseio.com",
-  projectId: "arina-151102",
-  storageBucket: "http://arina-151102.appspot.com",
-  messagingSenderId: "431314267144",
-  appId: "1:431314267144:web:159f8cb8c67c4a1cfef5bd"
-};
+// Konfigurasi Firebase
+import serviceAccount from './serviceAccount.json' assert { type: "json" };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const database = getDatabase(app);
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://arina-151102-default-rtdb.firebaseio.com/"
+});
 
-// Google Sheets Config
-const API_KEY = "AIzaSyAmcpzSyIeR5AEwKbswMOGWyQtosHuW_pw";
-const SPREADSHEET_ID = "1JepaIEQq8MR-mR4lEdn-4bJLTNV6u6gcKbxOI7NCHLk";
-const RANGE = "notif!A2:BW"; // Ganti dengan range data di spreadsheet Anda
+const database = admin.database();
 
-// Fungsi untuk Mengambil Data dari Google Sheets
+// Google Sheets API Config
+const API_KEY = "AIzaSyAmcpzSyIeR5AEwKbswMOGWyQtosHuW_pw"; // Ganti dengan API Key Anda
+const SPREADSHEET_ID = "1JepaIEQq8MR-mR4lEdn-4bJLTNV6u6gcKbxOI7NCHLk"; // Ganti dengan Spreadsheet ID Anda
+const RANGE = "notif!A:BY"; // Ganti dengan range yang sesuai
+
+// Fungsi untuk membersihkan key
+function sanitizeKey(key) {
+  if (!key) return 'unknown_key'; // Ganti key kosong dengan nama default
+  return key.replace(/[.#$/[\]]/g, '_'); // Ganti karakter ilegal dengan "_"
+}
+
+// Fungsi untuk mengambil data dari Google Sheets
 async function fetchSheetData() {
   const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${RANGE}?key=${API_KEY}`;
   try {
     const response = await axios.get(url);
     const rows = response.data.values;
+
     if (rows.length) {
-      const headers = rows[0];
+      const headers = rows[0].map(header => sanitizeKey(header.trim().replace(/\s+/g, '_'))); // Format dan sanitasi header
       const data = rows.slice(1).map(row => {
-        let obj = {};
+        const obj = {};
         headers.forEach((header, index) => {
-          obj[header] = row[index] || null;
+          // Gunakan nilai kosong jika kolom kosong
+          obj[header] = row[index] !== undefined ? row[index] : null;
         });
         return obj;
       });
-      return data;
+      
+      // Pastikan kolom diurutkan sesuai urutan header yang telah diformat
+      const sortedData = data.map(row => {
+        const sortedRow = {};
+        headers.forEach(header => {
+          sortedRow[header] = row[header]; // Urutkan kolom sesuai header
+        });
+        return sortedRow;
+      });
+
+      return sortedData;
     } else {
-      console.log('No data found in sheet.');
+      console.log('No data found in Google Sheets.');
       return [];
     }
   } catch (error) {
@@ -49,39 +61,33 @@ async function fetchSheetData() {
   }
 }
 
-// Fungsi untuk membersihkan key yang tidak valid
-function sanitizeKey(key, index) {
-  if (!key) return `key_${index}`; // Ganti key kosong dengan nama default
-  return key.replace(/[.#$/\[\]]/g, "_"); // Ganti karakter ilegal dengan "_"
-}
-
-// Fungsi untuk menyinkronkan data ke Firebase
+// Fungsi untuk menyimpan data ke Firebase
 async function syncToFirebase() {
   const data = await fetchSheetData();
+
   if (data.length) {
-    // Proses sanitasi key
-    const sanitizedData = data.map((row, rowIndex) => {
-      const sanitizedRow = {};
-      Object.keys(row).forEach((key, columnIndex) => {
-        const sanitizedKey = sanitizeKey(key, `${rowIndex}-${columnIndex}`); // Kombinasikan index untuk key default jika key kosong
-        sanitizedRow[sanitizedKey] = row[key];
-      });
-      return sanitizedRow;
+    const formattedData = {};
+    data.forEach((row, index) => {
+      formattedData[index] = row; // Simpan setiap baris dengan indeks sebagai key
     });
 
-    // Menyimpan data yang sudah disanitasi ke Firebase
-    const dbRef = ref(database, 'googleSheetData');
-    await set(dbRef, sanitizedData);
-    console.log('Data synced to Firebase successfully!');
+    const dbRef = database.ref('tickets');
+    try {
+      await dbRef.set(formattedData); // Simpan data ke Firebase
+      console.log('Data successfully synced to Firebase.');
+    } catch (error) {
+      console.error('Error syncing data to Firebase:', error.message);
+    }
   } else {
     console.log('No data to sync.');
   }
 }
 
-// Jadwalkan Sinkronisasi setiap 5 menit
+// Menjadwalkan sinkronisasi otomatis setiap 1 menit
 cron.schedule('*/1 * * * *', () => {
   console.log('Running scheduled sync...');
   syncToFirebase();
 });
 
-console.log("Scheduler started. Syncing every 1 minutes...");
+// Jalankan sinkronisasi pertama kali saat aplikasi dimulai
+syncToFirebase();

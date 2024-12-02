@@ -2,6 +2,8 @@
 
 import { SearchIcon } from "@heroicons/react/outline";
 import { useState, useEffect } from "react";
+import { database } from "@/lib/firebaseConfig";
+import {ref, onValue} from "firebase/database"
 
 interface Ticket {
   INC_KEY?: string;
@@ -80,6 +82,8 @@ interface Ticket {
   EXTERNAL_TICKET_TIER_3: string;
   CUSTOMER_CATEGORY: string;
   CLASSIFICATION_PATH: string;
+  TERITORY_NEAR_END: string;
+  TERITORY_FAR_END: string;
 }
 
 const TicketTable: React.FC = () => {
@@ -92,11 +96,20 @@ const TicketTable: React.FC = () => {
 
   // Fetch data dari API
   useEffect(() => {
-    fetch('http://localhost:5000/api/data')
-      .then((response) => response.json())
-      .then((data: Ticket[]) => setData(data))
-      .catch((error) => console.error('Error fetching data:', error));
+    const ticketRef = ref(database, "tickets");
+    const unsubscribe = onValue(ticketRef, (snapshot) => {
+      const ticketData = snapshot.val();
+      console.log(ticketData);  // Debug: Print data from Firebase
+
+      const tickets = ticketData 
+        ? Object.values(ticketData) as Ticket[] 
+        : [];
+      setData(tickets);
+    });
+
+    return () => unsubscribe();
   }, []);
+
 
   // Hitung total halaman
   const totalPages = Math.ceil(data.length / itemsPerPage);
@@ -215,80 +228,82 @@ const TicketTable: React.FC = () => {
             <tr className="bg-gray-100 text-sm text-center">
               {/* <th className="p-4">INC_KEY</th> */}
               <th className="p-4">INCIDENT</th>
-              <th className="p-4">TTR_CUSTOMER</th>
+              <th className="p-4">TTR CUSTOMER</th>
               <th className="p-4">SUMMARY</th>
-              <th className="p-4">REPORTED_DATE</th>
-              <th className="p-4">OWNER_GROUP</th>
-              <th className="p-4">OWN_ER</th>
-              <th className="p-4">CUSTOMER_SEGMENT</th>
-              <th className="p-4">SERVICE_TYPE</th>
+              <th className="p-4">REPORTED DATE</th>
+              <th className="p-4">OWNER GROUP</th>
+              <th className="p-4">OWN ER</th>
+              <th className="p-4">CUSTOMER SEGMENT</th>
+              <th className="p-4">SERVICE TYPE</th>
               <th className="p-4">WITEL</th>
               <th className="p-4">WORKZONE</th>
-              <th className="p-4">STA_TUS</th>
-              <th className="p-4">STATUS_DATE</th>
-              <th className="p-4">TICKET_ID_GAMAS</th>
-              <th className="p-4">REPORTED_BY</th>
-              <th className="p-4">CONTACT_PHONE</th>
-              <th className="p-4">CONTACT_NAME</th>
-              <th className="p-4">CONTACT_EMAIL</th>
-              <th className="p-4">BOOKING_DATE</th>
-              <th className="p-4">DESCRIPTION_ASSIGNMENT</th>
-              <th className="p-4">REPORTED_PRIORITY</th>
-              <th className="p-4">SOURCE_TICKET</th>
+              <th className="p-4">STA TUS</th>
+              <th className="p-4">STATUS DATE</th>
+              <th className="p-4">TICKET ID GAMAS</th>
+              <th className="p-4">REPORTED BY</th>
+              <th className="p-4">CONTACT PHONE</th>
+              <th className="p-4">CONTACT NAME</th>
+              <th className="p-4">CONTACT EMAIL</th>
+              <th className="p-4">BOOKING DATE</th>
+              <th className="p-4">DESCRIPTION ASSIGNMENT</th>
+              <th className="p-4">REPORTED PRIORITY</th>
+              <th className="p-4">SOURCE TICKET</th>
               <th className="p-4">SUBSIDIARY</th>
-              <th className="p-4">EXTERNAL_TICKET_ID</th>
+              <th className="p-4">EXTERNAL TICKET ID</th>
               <th className="p-4">CHANNEL</th>
-              <th className="p-4">CUSTOMER_TYPE</th>
-              <th className="p-4">CLOSED_BY</th>
-              <th className="p-4">CLOSED_REOPEN_BY</th>
-              <th className="p-4">CUSTOMER_ID</th>
-              <th className="p-4">CUSTOMER_NAME</th>
-              <th className="p-4">SERVICE_ID</th>
-              <th className="p-4">SERVICE_NO</th>
+              <th className="p-4">CUSTOMER TYPE</th>
+              <th className="p-4">CLOSED BY</th>
+              <th className="p-4">CLOSED REOPEN BY</th>
+              <th className="p-4">CUSTOMER ID</th>
+              <th className="p-4">CUSTOMER NAME</th>
+              <th className="p-4">SERVICE ID</th>
+              <th className="p-4">SERVICE NO</th>
               <th className="p-4">SLG</th>
               <th className="p-4">TECHNOLOGY</th>
               <th className="p-4">LAPUL</th>
               <th className="p-4">GAUL</th>
-              <th className="p-4">ONU_RX</th>
-              <th className="p-4">PENDING_REASON</th>
+              <th className="p-4">ONU RX</th>
+              <th className="p-4">PENDING REASON</th>
               <th className="p-4">DATEMODIFIED</th>
-              <th className="p-4">INCIDENT_DOMAIN</th>
+              <th className="p-4">INCIDENT DOMAIN</th>
               <th className="p-4">REGION</th>
               <th className="p-4">SYMPTOM</th>
-              <th className="p-4">HIERARCHY_PATH</th>
+              <th className="p-4">HIERARCHY PATH</th>
               <th className="p-4">SOLUTION</th>
-              <th className="p-4">DESCRIPTION_ACTUAL_SOLUTION</th>
-              <th className="p-4">KODE_PRODUK</th>
+              <th className="p-4">DESCRIPTION ACTUAL SOLUTION</th>
+              <th className="p-4">KODE PRODUK</th>
               <th className="p-4">PERANGKAT</th>
               <th className="p-4">TECHNICIAN</th>
-              <th className="p-4">DEVICE_NAME</th>
-              <th className="p-4">WORKLOG_SUMMARY</th>
-              <th className="p-4">CLASSIFICATION_FLAG</th>
+              <th className="p-4">DEVICE NAME</th>
+              <th className="p-4">WORKLOG SUMMARY</th>
+              <th className="p-4">CLASSIFICATION FLAG</th>
               <th className="p-4">REALM</th>
-              <th className="p-4">RELATED_TO_GAMAS</th>
-              <th className="p-4">TSC_RESULT</th>
-              <th className="p-4">SCC_RESULT</th>
-              <th className="p-4">TTR_AGENT</th>
-              <th className="p-4">TTR_MITRA</th>
-              <th className="p-4">TTR_NASIONAL</th>
-              <th className="p-4">TTR_PENDING</th>
-              <th className="p-4">TTR_REGION</th>
-              <th className="p-4">TTR_WITEL</th>
-              <th className="p-4">TTR_END_TO_END</th>
+              <th className="p-4">RELATED TO GAMAS</th>
+              <th className="p-4">TSC RESULT</th>
+              <th className="p-4">SCC RESULT</th>
+              <th className="p-4">TTR AGENT</th>
+              <th className="p-4">TTR MITRA</th>
+              <th className="p-4">TTR NASIONAL</th>
+              <th className="p-4">TTR PENDING</th>
+              <th className="p-4">TTR REGION</th>
+              <th className="p-4">TTR WITEL</th>
+              <th className="p-4">TTR END TO END</th>
               <th className="p-4">NOTE</th>
-              <th className="p-4">GUARANTE_STATUS</th>
-              <th className="p-4">RESOLVE_DATE</th>
-              <th className="p-4">SN_ONT</th>
-              <th className="p-4">TIPE_ONT</th>
-              <th className="p-4">MANUFACTURE_ONT</th>
-              <th className="p-4">IMPACTED_SITE</th>
+              <th className="p-4">GUARANTE STATUS</th>
+              <th className="p-4">RESOLVE DATE</th>
+              <th className="p-4">SN ONT</th>
+              <th className="p-4">TIPE ONT</th>
+              <th className="p-4">MANUFACTURE ONT</th>
+              <th className="p-4">IMPACTED SITE</th>
               <th className="p-4">CAUSE</th>
               <th className="p-4">RESOLUTION</th>
-              <th className="p-4">NOTES_ESKALASI</th>
-              <th className="p-4">RK_INFORMATION</th>
-              <th className="p-4">EXTERNAL_TICKET_TIER_3</th>
-              <th className="p-4">CUSTOMER_CATEGORY</th>
-              <th className="p-4">CLASSIFICATION_PATH</th>
+              <th className="p-4">NOTES ESKALASI</th>
+              <th className="p-4">RK INFORMATION</th>
+              <th className="p-4">EXTERNAL TICKET TIER 3</th>
+              <th className="p-4">CUSTOMER CATEGORY</th>
+              <th className="p-4">CLASSIFICATION PATH</th>
+              <th className="p-4">TERITORY NEAR END</th>
+              <th className="p-4">TERITORY FAR END</th>
 
             </tr>
           </thead>
@@ -298,7 +313,7 @@ const TicketTable: React.FC = () => {
                 {/* <td className="p-4">{ticket.INC_KEY || '-'}</td> */}
                 <td className="p-4">{ticket.INCIDENT || '-'}</td>
                 <td className="p-4">{ticket.TTR_CUSTOMER || '-'}</td>
-                <td className="p-4">{ticket.SUMMARY || '-'}</td>
+                <td className="p-4 text-sm break-words whitespace-normal max-w-[300px]">{ticket.SUMMARY || '-'}</td>
                 <td className="p-4">{ticket.REPORTED_DATE || '-'}</td>
                 <td className="p-4">{ticket.OWNER_GROUP || '-'}</td>
                 <td className="p-4">{ticket.OWN_ER || '-'}</td>
@@ -371,6 +386,8 @@ const TicketTable: React.FC = () => {
                 <td className="p-4">{ticket.EXTERNAL_TICKET_TIER_3 || '-'}</td>
                 <td className="p-4">{ticket.CUSTOMER_CATEGORY || '-'}</td>
                 <td className="p-4">{ticket.CLASSIFICATION_PATH || '-'}</td>
+                <td className="p-4">{ticket.TERITORY_NEAR_END || '-'}</td>
+                <td className="p-4">{ticket.TERITORY_FAR_END || '-'}</td>
               </tr>
             )) : (
               <tr>
