@@ -232,12 +232,12 @@ const TicketTable: React.FC = () => {
               <th className="p-4">SUMMARY</th>
               <th className="p-4">REPORTED DATE</th>
               <th className="p-4">OWNER GROUP</th>
-              <th className="p-4">OWN ER</th>
+              <th className="p-4">OWNER</th>
               <th className="p-4">CUSTOMER SEGMENT</th>
               <th className="p-4">SERVICE TYPE</th>
               <th className="p-4">WITEL</th>
               <th className="p-4">WORKZONE</th>
-              <th className="p-4">STA TUS</th>
+              <th className="p-4">STATUS</th>
               <th className="p-4">STATUS DATE</th>
               <th className="p-4">TICKET ID GAMAS</th>
               <th className="p-4">REPORTED BY</th>
@@ -313,7 +313,7 @@ const TicketTable: React.FC = () => {
                 {/* <td className="p-4">{ticket.INC_KEY || '-'}</td> */}
                 <td className="p-4">{ticket.INCIDENT || '-'}</td>
                 <td className="p-4">{ticket.TTR_CUSTOMER || '-'}</td>
-                <td className="p-4 text-sm break-words whitespace-normal max-w-[300px]">{ticket.SUMMARY || '-'}</td>
+                <td className="p-4 text-sm break-words whitespace-normal max-w-[300px] text-justify">{ticket.SUMMARY || '-'}</td>
                 <td className="p-4">{ticket.REPORTED_DATE || '-'}</td>
                 <td className="p-4">{ticket.OWNER_GROUP || '-'}</td>
                 <td className="p-4">{ticket.OWN_ER || '-'}</td>
