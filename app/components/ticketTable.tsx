@@ -153,13 +153,13 @@ const TicketTable: React.FC = () => {
   };
 
   return (
-    <div className="bg-white pl-12 shadow-lg rounded-lg">
+    <div className="bg-white pl-12 pr-8 shadow-lg rounded-lg">
       <div className="flex justify-between items-center py-4 mt-20">
         <div className="flex items-center">
           <div className="relative w-[300px]">
             <input
               type="text"
-              className="border rounded-lg p-2 pl-10 pr-4 text-sm"
+              className="border rounded-lg p-2 pl-10 pr-10 text-sm"
               placeholder="Search by ticket number..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)} // Update query pencarian
@@ -169,6 +169,9 @@ const TicketTable: React.FC = () => {
           </div>
         </div>
 
+        
+
+        <div className=" flex gap-4">
         <div className="text-sm">
           <label htmlFor="startDate" className="mr-2">Start Date:</label>
           <input
@@ -188,7 +191,6 @@ const TicketTable: React.FC = () => {
             className="border rounded-lg p-1 text-sm"
           />
         </div>
-
         <div className="text-sm">
           <label htmlFor="itemsPerPage" className="mr-2 ml-14">Show:</label>
           <select
@@ -219,9 +221,10 @@ const TicketTable: React.FC = () => {
             ))}
           </select>
         </div>
-
-        <button className="bg-blue-500 text-white py-2 px-4 rounded-lg text-sm mr-7">+ Add customer</button>
       </div>
+        </div>
+
+        
 
       <div className="overflow-x-auto">
         <table className="table-auto min-w-max">

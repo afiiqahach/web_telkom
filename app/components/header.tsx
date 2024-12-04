@@ -87,7 +87,7 @@ const Header = () => {
               <div className="text-[#232738] text-sm font-semibold">
                 {user ? user.displayName || user.email : 'Guest'}
               </div>
-              <div className="text-[#555353] text-xs font-medium">{user ? 'User' : 'Admin'}</div>
+              <div className="text-[#555353] text-xs">{user ? 'User' : 'Admin'}</div>
             </div>
           </button>
 

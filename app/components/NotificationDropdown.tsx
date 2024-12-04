@@ -1,23 +1,55 @@
 // import { useState, useEffect } from 'react';
 // import { BellIcon } from '@heroicons/react/outline';
+// import { getDatabase, ref, onValue } from 'firebase/database';
 
 // const NotificationDropdown = () => {
 //   const [notifications, setNotifications] = useState<string[]>([]);
 //   const [showNotifications, setShowNotifications] = useState(false);
 
 //   useEffect(() => {
-//     const fetchNotifications = async () => {
-//       try {
-//         const response = await fetch('/api/notifications'); // Ganti dengan endpoint API Anda
-//         const data = await response.json();
-//         setNotifications(data.notifications);
-//       } catch (error) {
-//         console.error('Gagal memuat notifikasi:', error);
-//       }
-//     };
+//     const db = getDatabase();
+//     const notificationsRef = ref(db, 'tickets'); // Ganti path ini sesuai data Anda
 
-//     fetchNotifications();
+//     const unsubscribe = onValue(notificationsRef, (snapshot) => {
+//       const data = snapshot.val();
+//       if (data) {
+//         const newNotifications = Object.values(data).map((item) => {
+//           // Validasi tipe data dan ambil INCIDENT
+//           const notification = item as { INCIDENT?: string };
+//           return notification.INCIDENT || "Notifikasi tanpa ringkasan";
+//         });
+    
+//         const latestNotification = newNotifications[newNotifications.length - 1];
+    
+//         // Perbarui state
+//         setNotifications(newNotifications);
+    
+//         // Tampilkan notifikasi browser
+//         triggerBrowserNotification(latestNotification);
+//       }
+//     });
+    
+
+//     return () => unsubscribe();
 //   }, []);
+
+//   // Fungsi untuk memicu notifikasi browser
+//   const triggerBrowserNotification = (message: string) => {
+//     if (!("Notification" in window)) {
+//       console.warn("Browser Anda tidak mendukung notifikasi.");
+//       return;
+//     }
+
+//     if (Notification.permission === "granted") {
+//       new Notification("Notifikasi Baru", { body: message });
+//     } else if (Notification.permission !== "denied") {
+//       Notification.requestPermission().then((permission) => {
+//         if (permission === "granted") {
+//           new Notification("Notifikasi Baru", { body: message });
+//         }
+//       });
+//     }
+//   };
 
 //   return (
 //     <div className="relative">
@@ -36,7 +68,7 @@
 //       {showNotifications && (
 //         <div className="absolute right-0 mt-2 w-64 bg-white border rounded-lg shadow-lg z-10">
 //           {notifications.length > 0 ? (
-//             <ul className="p-4 space-y-2">
+//             <ul className="p-4 space-y-2 max-h-72 overflow-y-auto">
 //               {notifications.map((notification, index) => (
 //                 <li
 //                   key={index}
@@ -59,10 +91,16 @@
 
 
 
-
 import { useState, useEffect } from 'react';
 import { BellIcon } from '@heroicons/react/outline';
 import { getDatabase, ref, onValue } from 'firebase/database';
+import { format } from 'date-fns'; // Pastikan Anda menginstal date-fns
+
+type Ticket = {
+  INCIDENT: string;
+  REPORTED_DATE: string; // Tanggal dalam format string
+  // [key: string]: any; // Tambahkan jika ada properti lain yang tidak relevan
+};
 
 const NotificationDropdown = () => {
   const [notifications, setNotifications] = useState<string[]>([]);
@@ -75,22 +113,25 @@ const NotificationDropdown = () => {
     const unsubscribe = onValue(notificationsRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
-        const newNotifications = Object.values(data).map((item) => {
-          // Validasi tipe data dan ambil SUMMARY
-          const notification = item as { INCIDENT?: string };
-          return notification.INCIDENT || "Notifikasi tanpa ringkasan";
-        });
-    
-        const latestNotification = newNotifications[newNotifications.length - 1];
-    
-        // Perbarui state
-        setNotifications(newNotifications);
-    
-        // Tampilkan notifikasi browser
-        triggerBrowserNotification(latestNotification);
+        // Tanggal hari ini dalam format 'YYYY-MM-DD'
+        const today = format(new Date(), 'yyyy-MM-dd'); // Sesuaikan format jika diperlukan
+
+        // Filter data berdasarkan tanggal hari ini dan ambil INCIDENT
+        const filteredNotifications = Object.values(data as Record<string, Ticket>)
+        .filter((item) => item.REPORTED_DATE === today) // Bandingkan tanggal
+        .map((item) => item.INCIDENT) // Ambil hanya INCIDENT
+        .filter((incident) => !!incident); // Hapus nilai kosong
+
+        // Jika ada data baru, tambahkan notifikasi browser
+        if (filteredNotifications.length > 0) {
+          const latestNotification = filteredNotifications[filteredNotifications.length - 1];
+          triggerBrowserNotification(latestNotification);
+        }
+
+        // Perbarui state dengan notifikasi terbaru
+        setNotifications(filteredNotifications);
       }
     });
-    
 
     return () => unsubscribe();
   }, []);
@@ -103,11 +144,11 @@ const NotificationDropdown = () => {
     }
 
     if (Notification.permission === "granted") {
-      new Notification("Notifikasi Baru", { body: message });
+      new Notification("Notifikasi Baru", { body: `INCIDENT: ${message}` });
     } else if (Notification.permission !== "denied") {
       Notification.requestPermission().then((permission) => {
         if (permission === "granted") {
-          new Notification("Notifikasi Baru", { body: message });
+          new Notification("Notifikasi Baru", { body: `INCIDENT: ${message}` });
         }
       });
     }
@@ -136,7 +177,7 @@ const NotificationDropdown = () => {
                   key={index}
                   className="text-sm text-gray-700 hover:bg-gray-100 px-2 py-1 rounded-md"
                 >
-                  {notification}
+                  INCIDENT: {notification}
                 </li>
               ))}
             </ul>
