@@ -108,31 +108,33 @@ const NotificationDropdown = () => {
 
   useEffect(() => {
     const db = getDatabase();
-    const notificationsRef = ref(db, 'tickets'); // Ganti path ini sesuai data Anda
-
+    const notificationsRef = ref(db, 'tickets');
+  
     const unsubscribe = onValue(notificationsRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
-        // Tanggal hari ini dalam format 'YYYY-MM-DD'
-        const today = format(new Date(), 'yyyy-MM-dd'); // Sesuaikan format jika diperlukan
-
-        // Filter data berdasarkan tanggal hari ini dan ambil INCIDENT
+        const today = format(new Date(), 'yyyy-MM-dd'); // Hanya tanggal
+  
+        // Filter data baru berdasarkan tanggal
         const filteredNotifications = Object.values(data as Record<string, Ticket>)
-        .filter((item) => item.REPORTED_DATE === today) // Bandingkan tanggal
-        .map((item) => item.INCIDENT) // Ambil hanya INCIDENT
-        .filter((incident) => !!incident); // Hapus nilai kosong
-
-        // Jika ada data baru, tambahkan notifikasi browser
-        if (filteredNotifications.length > 0) {
-          const latestNotification = filteredNotifications[filteredNotifications.length - 1];
-          triggerBrowserNotification(latestNotification);
-        }
-
-        // Perbarui state dengan notifikasi terbaru
-        setNotifications(filteredNotifications);
+          .filter((item) => item.REPORTED_DATE.startsWith(today)) // Perbandingan hanya tanggal
+          .map((item) => item.INCIDENT)
+          .filter((incident) => !!incident);
+  
+        // Perbarui state dengan data baru yang belum ditampilkan
+        setNotifications((prevNotifications) => {
+          const newNotifications = filteredNotifications.filter(
+            (notification) => !prevNotifications.includes(notification)
+          );
+  
+          // Tampilkan notifikasi browser untuk data baru
+          newNotifications.forEach((notification) => triggerBrowserNotification(notification));
+  
+          return [...prevNotifications, ...newNotifications];
+        });
       }
     });
-
+  
     return () => unsubscribe();
   }, []);
 
@@ -157,15 +159,15 @@ const NotificationDropdown = () => {
   return (
     <div className="relative">
       <button
-        className="relative flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-200"
+        className="relative hover:bg-gray-200 rounded-full"
         onClick={() => setShowNotifications(!showNotifications)}
       >
         <BellIcon className="h-6 w-6 text-gray-700" />
-        {notifications.length > 0 && (
-          <span className="absolute top-0 right-0 inline-flex items-center justify-center w-4 h-4 text-xs font-bold text-white bg-red-500 rounded-full">
-            {notifications.length}
+        {/* {notifications.length > 0 && ( */}
+          <span className="absolute top-0 right-0 block items-center justify-center w-2 h-2 text-xs font-bold text-white bg-red-500 rounded-full">
+            {/* {notifications.length} */}
           </span>
-        )}
+        {/* )} */}
       </button>
 
       {showNotifications && (

@@ -33,7 +33,7 @@ const Dashboard = () => {
       <Sidebar />
       <div className="flex-1 ms-64 bg-gray-50">
         <Header />
-        <div className="p-12">
+        <div className=" px-10 pt-5 pb-20">
           {/* Welcome Section */}
           <div className="bg-white shadow-lg rounded-lg p-8 flex items-center justify-between transition duration-300">
             <div className="max-w-md">
