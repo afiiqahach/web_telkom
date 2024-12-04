@@ -3,7 +3,8 @@
 import { SearchIcon } from "@heroicons/react/outline";
 import { useState, useEffect } from "react";
 import { database } from "@/lib/firebaseConfig";
-import {ref, onValue} from "firebase/database"
+import {ref, onValue , getDatabase} from "firebase/database";
+import { initializeApp } from 'firebase/app';
 
 interface Ticket {
   INC_KEY?: string;
