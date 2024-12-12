@@ -23,9 +23,9 @@ const Sidebar = () => {
     setIsReady(true);
   }, []);
 
-  // const navigateToDashboard = () => {
-  //   router.push("/");
-  // };
+  const navigateToDashboard = () => {
+    router.push("/");
+  };
 
   const navigateToTicket = () => {
     router.push("/ticket");
@@ -44,6 +44,12 @@ const Sidebar = () => {
       </div> */}
       <div className="p-4">
         {/* Sidebar items */}
+        <div
+          className="mb-4 p-2 hover:bg-[#083d6b] rounded-md cursor-pointer"
+          onClick={navigateToDashboard}
+        >
+          Dashboard
+        </div>
         <div
           className="mb-4 p-2 hover:bg-[#083d6b] rounded-md cursor-pointer"
           onClick={navigateToTicket}

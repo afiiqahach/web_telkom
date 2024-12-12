@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useRouter } from "next/navigation";
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth, db } from '@/lib/firebaseConfig.mjs';  // Path ke konfigurasi Firebase
+import { auth, db } from '@/lib/firebaseConfig.js';  // Path ke konfigurasi Firebase
 import { collection, query, where, getDocs } from 'firebase/firestore';
 
 export default function LoginPage() {
