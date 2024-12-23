@@ -1,6 +1,6 @@
-import Sidebar from "../components/sidebar"
+import Sidebar from "../components/sidebarAdmin"
 import TicketEditPage from "../components/ticketAdmin"
-import Header from "../components/header";
+import Header from "../components/headerAdmin";
 
 const Ticket = () => {
     return (
