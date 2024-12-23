@@ -385,6 +385,8 @@ type Ticket = {
 
 const TicketEditPage: React.FC = () => {
   const [tickets, setTickets] = useState<Ticket[]>([]);
+  const [filteredTickets, setFilteredTickets] = useState<Ticket[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>('');
   const [pageSize, setPageSize] = useState<number>(50); // Default page size
   const [pageNumber, setPageNumber] = useState<number>(1);
 
@@ -395,27 +397,52 @@ const TicketEditPage: React.FC = () => {
 
     onValue(ticketsQuery, (snapshot) => {
       const data = snapshot.val();
-      const ticketsArray: Ticket[] = data ? Object.keys(data).map((key) => ({ id: key, ...data[key] })) : [];
+      const ticketsArray: Ticket[] = data
+        ? Object.keys(data).map((key) => ({ id: key, ...data[key] }))
+        : [];
       setTickets(ticketsArray);
+      setFilteredTickets(ticketsArray);
     });
   }, [pageSize, pageNumber]);
 
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const query = event.target.value.toLowerCase();
+    setSearchQuery(query);
+  
+    if (query.trim() === "") {
+      // Jika kotak pencarian kosong, tampilkan semua tiket
+      setFilteredTickets(tickets);
+      return;
+    }
+  
+    // Filter tiket berdasarkan kolom INCIDENT
+    const filtered = tickets.filter((ticket) =>
+      ticket.INCIDENT.toLowerCase().includes(query)
+    );
+    setFilteredTickets(filtered);
+  };
+
   const handleEdit = (id: string) => {
-    // Placeholder for edit functionality
-    console.log(`Editing ticket with ID: ${id}`);
+    alert(`Edit functionality for Ticket ID: ${id} is under development.`);
   };
 
   const handleDelete = (id: string) => {
-    const ticketRef = ref(database, `tickets/${id}`);
-
-    // Remove ticket from Firebase Realtime Database
-    remove(ticketRef)
-      .then(() => {
-        console.log(`Ticket with ID: ${id} deleted successfully.`);
-      })
-      .catch((error) => {
-        console.error(`Error deleting ticket with ID: ${id}`, error);
-      });
+    if (window.confirm(`Are you sure you want to delete Ticket ID: ${id}?`)) {
+      const ticketRef = ref(database, `tickets/${id}`);
+      remove(ticketRef)
+        .then(() => {
+          console.log(`Ticket with ID: ${id} deleted successfully.`);
+          setTickets((prevTickets) =>
+            prevTickets.filter((ticket) => ticket.id !== id)
+          );
+          setFilteredTickets((prevFilteredTickets) =>
+            prevFilteredTickets.filter((ticket) => ticket.id !== id)
+          );
+        })
+        .catch((error) => {
+          console.error(`Error deleting ticket with ID: ${id}`, error);
+        });
+    }
   };
 
   // Pagination controls
@@ -437,23 +464,37 @@ const TicketEditPage: React.FC = () => {
   return (
     <div className="p-6 bg-gray-100 min-h-screen mt-20">
       <h1 className="text-2xl font-bold mb-4">Tickets</h1>
-  
-      {/* Page size selector */}
-      <div className="mb-4">
-        <label htmlFor="pageSize" className="mr-2">Show</label>
-        <select
-          id="pageSize"
-          value={pageSize}
-          onChange={handlePageSizeChange}
-          className="border p-2 rounded"
-        >
-          <option value={50}>50</option>
-          <option value={100}>100</option>
-          <option value={500}>500</option>
-        </select>
-        <span className="ml-2">per page</span>
+      
+      <div className="flex items-center justify-between mb-4">
+      <div>
+          <input
+            type="text"
+            placeholder="Search by incident ..."
+            value={searchQuery}
+            onChange={handleSearch}
+            className="border p-2 rounded w-64"
+          />
+        </div>
+
+      <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center">
+          <label htmlFor="pageSize" className="mr-2">Show</label>
+          <select
+            id="pageSize"
+            value={pageSize}
+            onChange={handlePageSizeChange}
+            className="border p-2 rounded"
+          >
+            <option value={50}>50</option>
+            <option value={100}>100</option>
+            <option value={500}>500</option>
+          </select>
+          <span className="px-5">per page</span>
+        </div>
       </div>
-  
+      </div>
+      
+
       <div className="overflow-x-auto bg-white p-4 rounded shadow">
         <table className="table-auto w-full border-collapse border border-gray-300">
           <thead>
@@ -467,7 +508,7 @@ const TicketEditPage: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {tickets.map((ticket, index) => (
+            {filteredTickets.map((ticket, index) => (
               <tr key={ticket.id} className="text-center">
                 <td className="border border-gray-300 px-4 py-2">{(pageNumber - 1) * pageSize + index + 1}</td>
                 <td className="border border-gray-300 px-4 py-2">{ticket.INCIDENT}</td>
@@ -495,8 +536,7 @@ const TicketEditPage: React.FC = () => {
           </tbody>
         </table>
       </div>
-  
-      {/* Pagination controls */}
+
       <div className="flex justify-between items-center mt-4">
         <button
           onClick={handlePrevPage}
@@ -514,7 +554,7 @@ const TicketEditPage: React.FC = () => {
         </button>
       </div>
     </div>
-  );  
+  );
 };
 
 export default TicketEditPage;
