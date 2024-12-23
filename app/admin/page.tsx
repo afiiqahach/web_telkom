@@ -7,6 +7,7 @@ import Sidebar from '@/app/components/sidebarAdmin';
 import Header from '@/app/components/headerAdmin';
 // import Footer from '@/app/components/footer';
 // import { useRouter } from 'next/navigation';
+import Dashboard from './dashboard/page';
 
 const Ticket = () => {
     return (
@@ -16,6 +17,9 @@ const Ticket = () => {
                 <div>
                     <Header/>
                 </div>
+            </div>
+            <div>
+              <Dashboard/>
             </div>            
         </div>
     )
