@@ -1,11 +1,12 @@
+'use client'
 import React, { useEffect, useState } from "react";
 import { database } from "../../../lib/firebaseConfig";
 import { ref, onValue } from "firebase/database";
 
 interface Ticket {
     id: string;
-    title: string;
-    status: string;
+    INCIDENT: string;
+    STATUS: string;
   }
   
   const Dashboard: React.FC = () => {
@@ -28,10 +29,10 @@ interface Ticket {
             setTickets(ticketsArray);
     
             const backendCount = ticketsArray.filter(
-              (ticket) => ticket.status === "backend"
+              (ticket) => ticket.STATUS === "backend"
             ).length;
             const analysisCount = ticketsArray.filter(
-              (ticket) => ticket.status === "analysis"
+              (ticket) => ticket.STATUS === "analysis"
             ).length;
     
             setStatusCounts({
@@ -74,13 +75,16 @@ interface Ticket {
             </div>
     
             {/* Daftar Tiket */}
+            <header className="flex justify-between items-center mb-6">
+              <h1 className="text-2xl font-bold text-gray-800">Tickets</h1>
+            </header>
             <div className="bg-white rounded-lg shadow-md p-6">
               <h2 className="text-lg font-medium text-gray-800 mb-4">Recent Tickets</h2>
               <table className="table-auto w-full text-left">
                 <thead>
                   <tr className="bg-gray-100 border-b">
                     <th className="py-3 px-4 text-gray-600">No</th>
-                    <th className="py-3 px-4 text-gray-600">Title</th>
+                    <th className="py-3 px-4 text-gray-600">Incident</th>
                     <th className="py-3 px-4 text-gray-600">Status</th>
                   </tr>
                 </thead>
@@ -91,8 +95,8 @@ interface Ticket {
                       className="border-b hover:bg-gray-50 transition duration-200"
                     >
                       <td className="py-3 px-4 text-gray-700">{index + 1}</td>
-                      <td className="py-3 px-4 text-gray-700">{ticket.title}</td>
-                      <td className="py-3 px-4 text-gray-700">{ticket.status}</td>
+                      <td className="py-3 px-4 text-gray-700">{ticket.INCIDENT}</td>
+                      <td className="py-3 px-4 text-gray-700">{ticket.STATUS}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -100,7 +104,7 @@ interface Ticket {
               <div className="text-right mt-4">
                 <button
                   className="text-blue-600 font-medium hover:underline"
-                  onClick={() => (window.location.href = "/admin")}
+                  onClick={() => (window.location.href = "/admin/ticketAdmin")}
                 >
                   Show All
                 </button>

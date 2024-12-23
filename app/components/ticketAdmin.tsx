@@ -303,7 +303,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { ref, onValue, remove, query, limitToFirst } from 'firebase/database'; // Import from firebase/database
+import { ref, onValue, query, limitToFirst } from 'firebase/database'; // Import from firebase/database
+// import { ref, onValue, remove, query, limitToFirst } from 'firebase/database'; // Import from firebase/database
 import { database } from '../../lib/firebaseConfig'; // Importing the initialized Firebase Realtime Database
 
 type Ticket = {
@@ -422,28 +423,28 @@ const TicketEditPage: React.FC = () => {
     setFilteredTickets(filtered);
   };
 
-  const handleEdit = (id: string) => {
-    alert(`Edit functionality for Ticket ID: ${id} is under development.`);
-  };
+  // const handleEdit = (id: string) => {
+  //   alert(`Edit functionality for Ticket ID: ${id} is under development.`);
+  // };
 
-  const handleDelete = (id: string) => {
-    if (window.confirm(`Are you sure you want to delete Ticket ID: ${id}?`)) {
-      const ticketRef = ref(database, `tickets/${id}`);
-      remove(ticketRef)
-        .then(() => {
-          console.log(`Ticket with ID: ${id} deleted successfully.`);
-          setTickets((prevTickets) =>
-            prevTickets.filter((ticket) => ticket.id !== id)
-          );
-          setFilteredTickets((prevFilteredTickets) =>
-            prevFilteredTickets.filter((ticket) => ticket.id !== id)
-          );
-        })
-        .catch((error) => {
-          console.error(`Error deleting ticket with ID: ${id}`, error);
-        });
-    }
-  };
+  // const handleDelete = (id: string) => {
+  //   if (window.confirm(`Are you sure you want to delete Ticket ID: ${id}?`)) {
+  //     const ticketRef = ref(database, `tickets/${id}`);
+  //     remove(ticketRef)
+  //       .then(() => {
+  //         console.log(`Ticket with ID: ${id} deleted successfully.`);
+  //         setTickets((prevTickets) =>
+  //           prevTickets.filter((ticket) => ticket.id !== id)
+  //         );
+  //         setFilteredTickets((prevFilteredTickets) =>
+  //           prevFilteredTickets.filter((ticket) => ticket.id !== id)
+  //         );
+  //       })
+  //       .catch((error) => {
+  //         console.error(`Error deleting ticket with ID: ${id}`, error);
+  //       });
+  //   }
+  // };
 
   // Pagination controls
   const handlePageSizeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -501,7 +502,7 @@ const TicketEditPage: React.FC = () => {
             <tr className="bg-gray-200">
               <th className="border border-gray-300 px-4 py-2">No</th>
               <th className="border border-gray-300 px-4 py-2">Incident</th>
-              <th className="border border-gray-300 px-4 py-2">Customer</th>
+              <th className="border border-gray-300 px-4 py-2">Reported Date</th>
               <th className="border border-gray-300 px-4 py-2">Summary</th>
               <th className="border border-gray-300 px-4 py-2">Status</th>
               <th className="border border-gray-300 px-4 py-2">Action</th>
@@ -512,23 +513,24 @@ const TicketEditPage: React.FC = () => {
               <tr key={ticket.id} className="text-center">
                 <td className="border border-gray-300 px-4 py-2">{(pageNumber - 1) * pageSize + index + 1}</td>
                 <td className="border border-gray-300 px-4 py-2">{ticket.INCIDENT}</td>
-                <td className="border border-gray-300 px-4 py-2">{ticket.CUSTOMER}</td>
+                {/* <td className="border border-gray-300 px-4 py-2">{ticket.CUSTOMER}</td> */}
+                <td className="border border-gray-300 px-4 py-2">{ticket.REPORTED_DATE}</td>
                 <td className="border border-gray-300 px-4 py-2">{ticket.SUMMARY}</td>
                 <td className="border border-gray-300 px-4 py-2">{ticket.STATUS}</td>
                 <td className="border border-gray-300 px-4 py-2">
                   <div className="flex justify-center gap-2">
                     <button
-                      onClick={() => handleEdit(ticket.id)}
+                      onClick={() => (window.location.href = "/admin/edit")}
                       className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded"
                     >
                       Edit
                     </button>
-                    <button
+                    {/* <button
                       onClick={() => handleDelete(ticket.id)}
                       className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
                     >
                       Delete
-                    </button>
+                    </button> */}
                   </div>
                 </td>
               </tr>
