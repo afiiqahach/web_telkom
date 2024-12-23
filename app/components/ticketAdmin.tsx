@@ -437,23 +437,23 @@ const TicketEditPage: React.FC = () => {
   return (
     <div className="p-6 bg-gray-100 min-h-screen mt-20">
       <h1 className="text-2xl font-bold mb-4">Tickets</h1>
-
+  
       {/* Page size selector */}
       <div className="mb-4">
         <label htmlFor="pageSize" className="mr-2">Show</label>
         <select
-            id="pageSize"
-            value={pageSize}
-            onChange={handlePageSizeChange}
-            className="border p-2 rounded"
-            >
-            <option value={50}>50</option>
-            <option value={100}>100</option>
-            <option value={500}>500</option>
+          id="pageSize"
+          value={pageSize}
+          onChange={handlePageSizeChange}
+          className="border p-2 rounded"
+        >
+          <option value={50}>50</option>
+          <option value={100}>100</option>
+          <option value={500}>500</option>
         </select>
         <span className="ml-2">per page</span>
       </div>
-
+  
       <div className="overflow-x-auto bg-white p-4 rounded shadow">
         <table className="table-auto w-full border-collapse border border-gray-300">
           <thead>
@@ -474,26 +474,28 @@ const TicketEditPage: React.FC = () => {
                 <td className="border border-gray-300 px-4 py-2">{ticket.CUSTOMER}</td>
                 <td className="border border-gray-300 px-4 py-2">{ticket.SUMMARY}</td>
                 <td className="border border-gray-300 px-4 py-2">{ticket.STATUS}</td>
-                <td className="border border-gray-300 px-4 py-2 flex justify-center gap-2">
-                  <button
-                    onClick={() => handleEdit(ticket.id)}
-                    className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(ticket.id)}
-                    className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
-                  >
-                    Delete
-                  </button>
+                <td className="border border-gray-300 px-4 py-2">
+                  <div className="flex justify-center gap-2">
+                    <button
+                      onClick={() => handleEdit(ticket.id)}
+                      className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(ticket.id)}
+                      className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-
+  
       {/* Pagination controls */}
       <div className="flex justify-between items-center mt-4">
         <button
@@ -503,9 +505,7 @@ const TicketEditPage: React.FC = () => {
         >
           Prev
         </button>
-        <span>
-          Page {pageNumber}
-        </span>
+        <span>Page {pageNumber}</span>
         <button
           onClick={handleNextPage}
           className="bg-gray-300 text-gray-700 px-4 py-2 rounded"
@@ -514,7 +514,7 @@ const TicketEditPage: React.FC = () => {
         </button>
       </div>
     </div>
-  );
+  );  
 };
 
 export default TicketEditPage;
