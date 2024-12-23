@@ -2,8 +2,8 @@
 import { useState } from 'react';
 import { useRouter } from "next/navigation";
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth, db } from '@/lib/firebaseConfig.js';  // Path ke konfigurasi Firebase
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { auth, db } from '@/lib/firebaseConfig.js'; // Path ke konfigurasi Firebase
+import { collection, query, where, getDocs, doc, getDoc } from 'firebase/firestore';
 
 export default function LoginPage() {
   const [emailOrUsername, setEmailOrUsername] = useState('');
@@ -20,9 +20,9 @@ export default function LoginPage() {
       const querySnapshot = await getDocs(q);
 
       if (!querySnapshot.empty) {
-        const userData = querySnapshot.docs[0].data(); 
+        const userData = querySnapshot.docs[0].data();
         if (userData && 'email' in userData) {
-          return userData.email; 
+          return userData.email;
         } else {
           throw new Error('Email not found for the given username');
         }
@@ -31,7 +31,7 @@ export default function LoginPage() {
       }
     } catch (error) {
       if (error instanceof Error) {
-        throw new Error(error.message); 
+        throw new Error(error.message);
       } else {
         throw new Error('An unexpected error occurred');
       }
@@ -41,30 +41,50 @@ export default function LoginPage() {
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
-
+  
     try {
       let email = emailOrUsername;
-
+  
+      // Cek jika input bukan email, cari berdasarkan username
       if (!email.includes('@')) {
         email = await findEmailByUsername(emailOrUsername);
       }
-
+  
+      // Hardcoded admin login
+      if (email === "arina@gmail.com" && password === "admin123") {
+        router.push("/admin");
+        return;
+      }
+  
+      // Proses login Firebase
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-
-      if (!user.emailVerified) {
-        throw new Error('Please verify your email before logging in.');
+  
+      // Dapatkan data user dari Firestore
+      const userDoc = await getDoc(doc(db, "arina", user.uid));
+  
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+  
+        // Cek role
+        if (userData.role === "admin") {
+          router.push("/admin");
+        } else if (user.emailVerified) {
+          router.push("/");
+        } else {
+          throw new Error("Please verify your email before logging in.");
+        }
+      } else {
+        throw new Error("User data not found.");
       }
-
-      router.push('/');
     } catch (error) {
       if (error instanceof Error) {
-        setError(error.message); 
+        setError(error.message);
       } else {
         setError('An unexpected error occurred.');
       }
     }
-  };
+  };  
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
@@ -72,7 +92,7 @@ export default function LoginPage() {
         <h2 className="text-center text-[#2e2e2e] text-[32px] font-semibold">
           Welcome to <span className="text-[#104C98]">ARINA</span>
         </h2>
-        
+
         {error && <p className="text-[#104C98] text-center mb-4">{error}</p>}
 
         <form onSubmit={handleLogin} className="space-y-4">
