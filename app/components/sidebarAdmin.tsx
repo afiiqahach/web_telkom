@@ -24,24 +24,15 @@ const Sidebar = () => {
   }, []);
 
   const navigateToDashboard = () => {
-    router.push("/");
+    router.push("/admin");
   };
 
   const navigateToTicket = () => {
-    router.push("/ticket");
+    router.push("/admin/ticketAdmin");
   };
 
   return (
     <div className="fixed left-0 w-64 h-full bg-[#104C98] text-white shadow-lg">
-      {/* <div className="flex items-center justify-start p-4 bg-white shadow-sm">
-        <img src="img/logokecil.png" alt="Telkom" className="h-10" />
-        <button
-          className="text-2xl font-bold ps-4 text-[#104C98] hover:text-black"
-          onClick={navigateToDashboard}
-        >
-          ARINA
-        </button>
-      </div> */}
       <div className="p-4">
         {/* Sidebar items */}
         <div

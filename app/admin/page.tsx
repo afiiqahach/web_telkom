@@ -1,23 +1,23 @@
-import Sidebar from "../components/sidebarAdmin"
-import TicketEditPage from "../components/ticketAdmin"
-import Header from "../components/headerAdmin";
+'use client';
+
+// import { useEffect, useState } from 'react';
+// import { onAuthStateChanged } from 'firebase/auth';
+// import { auth } from '@/lib/firebaseConfig';
+import Sidebar from '@/app/components/sidebarAdmin';
+import Header from '@/app/components/headerAdmin';
+// import Footer from '@/app/components/footer';
+// import { useRouter } from 'next/navigation';
 
 const Ticket = () => {
     return (
         <div >
             <Sidebar/>
-            <div className="ms-64">
+            <div className="my-20">
                 <div>
                     <Header/>
                 </div>
-                <div>
-                    <TicketEditPage/>
-                </div>
-            </div>
-            
+            </div>            
         </div>
-
-        
     )
 }
 
