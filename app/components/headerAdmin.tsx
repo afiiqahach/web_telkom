@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react';
 import { ChevronDownIcon, UserIcon } from '@heroicons/react/outline';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
-import { auth } from '@/lib/firebaseConfig.js';
+import { auth, db } from '@/lib/firebaseConfig'; // Pastikan path sudah benar
+import { collection, query, where, getDocs } from 'firebase/firestore';
 import NotificationDropdown from './NotificationDropdown';
 
 const ADMIN_EMAIL = "arina@gmail.com"; // Email admin yang ditentukan
@@ -15,11 +16,39 @@ const Header = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
         console.log('User:', currentUser); // Debugging untuk memastikan data pengguna
-        setUser({ displayName: currentUser.email === ADMIN_EMAIL ? 'Arina' : currentUser.displayName,
-            email: currentUser.email, });
+
+        const fetchUserData = async () => {
+          try {
+            const userRef = collection(db, "user");
+            const q = query(userRef, where("email", "==", currentUser.email));
+            const querySnapshot = await getDocs(q);
+
+            if (!querySnapshot.empty) {
+              const userData = querySnapshot.docs[0].data();
+              setUser({
+                displayName: userData.role === "admin" ? "Arina" : userData.username,
+                email: currentUser.email,
+              });
+            } else {
+              // Jika data tidak ditemukan, gunakan bawaan dari Firebase Auth
+              setUser({
+                displayName: currentUser.displayName || currentUser.email,
+                email: currentUser.email,
+              });
+            }
+          } catch (error) {
+            console.error("Error fetching user data:", error);
+            setUser({
+              displayName: currentUser.displayName || currentUser.email,
+              email: currentUser.email,
+            });
+          }
+        };
+
+        await fetchUserData();
       } else {
         console.log('No user is logged in');
         setUser(null);
@@ -39,9 +68,6 @@ const Header = () => {
 
   const handleLoginRedirect = () => router.push('/login');
   const navigateToDashboard = () => router.push('/admin');
-//   const navigateToProfile = () => router.push('/profile');
-
-  const isAdmin = user?.email === ADMIN_EMAIL;
 
   return (
     <div className="fixed top-0 left-0 right-0 flex justify-between items-center px-5 py-2 border-b shadow-md bg-white z-50">
@@ -71,10 +97,10 @@ const Header = () => {
               <UserIcon className="h-10 w-10 text-black" />
               <div className="flex flex-col items-start ml-4">
                 <div className="text-[#232738] text-sm font-semibold">
-                  {isAdmin ? 'Arina' : user?.displayName || user?.email || 'Admin'}
+                  {user?.displayName || user?.email || 'Arina'}
                 </div>
                 <div className="text-[#555353] text-xs">
-                  {isAdmin ? 'Admin' : user ? 'Admin' : 'Admin'}
+                  {user?.email === ADMIN_EMAIL ? 'Admin' : 'Admin'}
                 </div>
               </div>
             </div>
