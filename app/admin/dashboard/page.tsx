@@ -2,12 +2,26 @@
 import React, { useEffect, useState } from "react";
 import { database } from "../../../lib/firebaseConfig";
 import { ref, onValue } from "firebase/database";
-import { useRouter } from "next/navigation"; // Import Next.js router for navigation
+import { useRouter } from "next/navigation";
+import { Bar } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+
+// Register Chart.js components
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 interface Ticket {
   id: string;
   INCIDENT: string;
   STATUS: string;
+  OWNER_GROUP: string;
 }
 
 const Dashboard: React.FC = () => {
@@ -16,8 +30,10 @@ const Dashboard: React.FC = () => {
     backend: 0,
     analysis: 0,
   });
+  const [ownerGroupCounts, setOwnerGroupCounts] = useState<Record<string, number>>({});
+  const router = useRouter();
 
-  const router = useRouter(); // Initialize router
+  const allDistricts = ["District A", "District B", "District C", "District D", "District E"]; // Default districts
 
   useEffect(() => {
     const ticketsRef = ref(database, "tickets");
@@ -32,6 +48,7 @@ const Dashboard: React.FC = () => {
 
         setTickets(ticketsArray);
 
+        // Count tickets by status
         const backendCount = ticketsArray.filter(
           (ticket) => ticket.STATUS.toLowerCase() === "backend"
         ).length;
@@ -43,13 +60,88 @@ const Dashboard: React.FC = () => {
           backend: backendCount,
           analysis: analysisCount,
         });
+
+        // Count tickets by OWNER_GROUP
+        const groupCounts: Record<string, number> = {};
+        ticketsArray.forEach((ticket) => {
+          const group = ticket.OWNER_GROUP || "Unknown";
+          groupCounts[group] = (groupCounts[group] || 0) + 1;
+        });
+
+        // Ensure all districts are present
+        allDistricts.forEach((district) => {
+          if (!groupCounts[district]) {
+            groupCounts[district] = 0;
+          }
+        });
+
+        setOwnerGroupCounts(groupCounts);
       }
     });
   }, []);
 
-  // Navigate to filtered tickets page
-  const handleNavigate = (status: string) => {
-    router.push(`/admin/status?status=${status}`);
+  // Prepare data for bar chart
+  const ownerGroups = Object.keys(ownerGroupCounts);
+  const ticketCounts = Object.values(ownerGroupCounts);
+
+  const chartData = {
+    labels: ownerGroups,
+    datasets: [
+      {
+        label: "Tickets per Owner Group",
+        data: ticketCounts,
+        backgroundColor: [
+          "#4caf50", "#2196f3", "#ff9800", "#9c27b0", "#f44336",
+        ],
+        borderColor: "#ffffff",
+        borderWidth: 1,
+        borderRadius: 5,
+      },
+    ],
+  };
+
+  const chartOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "top" as const, // Pastikan "as const" digunakan di sini
+        labels: {
+          font: {
+            size: 12,
+          },
+        },
+      },
+      title: {
+        display: true,
+        text: "Tickets by Owner Group",
+        font: {
+          size: 16,
+        },
+      },
+    },
+    maintainAspectRatio: false,
+    aspectRatio: 2.5,
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          stepSize: 50,
+        },
+        grid: {
+          color: "#e0e0e0",
+        },
+      },
+      x: {
+        ticks: {
+          font: {
+            size: 10,
+          },
+        },
+        grid: {
+          display: false,
+        },
+      },
+    },
   };
 
   return (
@@ -63,7 +155,7 @@ const Dashboard: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <div
             className="flex items-center bg-blue-100 p-6 rounded-lg shadow-md cursor-pointer"
-            onClick={() => handleNavigate("backend")} // Navigate on click
+            onClick={() => router.push("/admin/status?status=backend")}
           >
             <div className="flex-1">
               <h2 className="text-lg font-medium text-gray-800">Backend</h2>
@@ -75,7 +167,7 @@ const Dashboard: React.FC = () => {
           </div>
           <div
             className="flex items-center bg-green-100 p-6 rounded-lg shadow-md cursor-pointer"
-            onClick={() => handleNavigate("analysis")} // Navigate on click
+            onClick={() => router.push("/admin/status?status=analysis")}
           >
             <div className="flex-1">
               <h2 className="text-lg font-medium text-gray-800">Analysis</h2>
@@ -87,10 +179,17 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
 
+        {/* Diagram Batang */}
+        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+          <h2 className="text-lg font-medium text-gray-800 mb-4">
+            Tickets by Owner Group
+          </h2>
+          <div className="h-64">
+            <Bar data={chartData} options={chartOptions} />
+          </div>
+        </div>
+
         {/* Daftar Tiket */}
-        <header className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-800">Tickets</h1>
-        </header>
         <div className="bg-white rounded-lg shadow-md p-6">
           <h2 className="text-lg font-medium text-gray-800 mb-4">Recent Tickets</h2>
           <table className="table-auto w-full text-left">
@@ -109,7 +208,19 @@ const Dashboard: React.FC = () => {
                 >
                   <td className="py-3 px-4 text-gray-700">{index + 1}</td>
                   <td className="py-3 px-4 text-gray-700">{ticket.INCIDENT}</td>
-                  <td className="py-3 px-4 text-gray-700">{ticket.STATUS}</td>
+                  <td className="py-3 px-4">
+                    <span
+                      className={`inline-block px-3 py-1 text-sm font-medium rounded-full ${
+                        ticket.STATUS.toLowerCase() === "backend"
+                          ? "bg-blue-100 text-blue-600"
+                          : ticket.STATUS.toLowerCase() === "analysis"
+                          ? "bg-green-100 text-green-600"
+                          : "bg-gray-100 text-gray-600"
+                      }`}
+                    >
+                      {ticket.STATUS.toUpperCase()}
+                    </span>
+                  </td>
                 </tr>
               ))}
             </tbody>
