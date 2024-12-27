@@ -648,7 +648,7 @@ const TicketEditPage: React.FC = () => {
   return (
     <div className="p-6 bg-gray-100 min-h-screen mt-20">
       <h1 className="text-2xl font-bold mb-4">Tickets</h1>
-
+  
       <div className="flex items-center justify-between mb-4">
         <div>
           <input
@@ -659,7 +659,7 @@ const TicketEditPage: React.FC = () => {
             className="border p-2 rounded w-64"
           />
         </div>
-
+  
         <div className="flex items-center">
           <label htmlFor="pageSize" className="mr-2">Show</label>
           <select
@@ -675,7 +675,7 @@ const TicketEditPage: React.FC = () => {
           <span className="px-5">per page</span>
         </div>
       </div>
-
+  
       <div className="overflow-x-auto bg-white p-4 rounded shadow">
         <table className="table-auto w-full border-collapse border border-gray-300">
           <thead>
@@ -691,16 +691,40 @@ const TicketEditPage: React.FC = () => {
           <tbody>
             {filteredTickets.map((ticket, index) => (
               <tr key={ticket.id} className="text-center">
-                <td className="border border-gray-300 px-4 py-2">{(pageNumber - 1) * pageSize + index + 1}</td>
-                <td className="border border-gray-300 px-4 py-2">{ticket.INCIDENT}</td>
-                <td className="border border-gray-300 px-4 py-2">{ticket.REPORTED_DATE}</td>
-                <td className="border border-gray-300 px-4 py-2">{ticket.SUMMARY}</td>
                 <td className="border border-gray-300 px-4 py-2">
-                  {typeof ticket.STATUS === 'object' ? JSON.stringify(ticket.STATUS) : ticket.STATUS || 'Unknown'}
+                  {(pageNumber - 1) * pageSize + index + 1}
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  {ticket.INCIDENT}
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  {ticket.REPORTED_DATE}
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  {ticket.SUMMARY}
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  {typeof ticket.STATUS === 'string' ? (
+                    <span
+                      className={`inline-block px-3 py-1 text-sm font-medium rounded-full ${
+                        ticket.STATUS.toLowerCase() === "backend"
+                          ? "bg-blue-100 text-blue-600"
+                          : ticket.STATUS.toLowerCase() === "analysis"
+                          ? "bg-green-100 text-green-600"
+                          : "bg-gray-100 text-gray-600"
+                      }`}
+                    >
+                      {ticket.STATUS.toUpperCase()}
+                    </span>
+                  ) : (
+                    <span className="inline-block px-3 py-1 text-sm font-medium rounded-full bg-gray-100 text-gray-600">
+                      Unknown
+                    </span>
+                  )}
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
                   <button
-                    onClick={() => (window.location.href = '/admin/edit')}
+                    onClick={() => (window.location.href = "/admin/edit")}
                     className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded"
                   >
                     Edit
@@ -711,7 +735,7 @@ const TicketEditPage: React.FC = () => {
           </tbody>
         </table>
       </div>
-
+  
       <div className="flex justify-between items-center mt-4">
         <button
           onClick={handlePrevPage}
@@ -730,6 +754,7 @@ const TicketEditPage: React.FC = () => {
       </div>
     </div>
   );
+  
 };
 
 export default TicketEditPage;
