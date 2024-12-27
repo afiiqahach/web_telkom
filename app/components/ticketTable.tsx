@@ -18,7 +18,7 @@ interface Ticket {
   SERVICE_TYPE?: string;
   WITEL?: string;
   WORKZONE?: string;
-  STA_TUS?: string;
+  STATUS?: string;
   STATUS_DATE?: string;
   TICKET_ID_GAMAS?: string;
   REPORTED_BY?: string;
@@ -222,7 +222,7 @@ const TicketTable: React.FC = () => {
           </select>
         </div>
       </div>
-        </div>
+    </div>
 
         
 
@@ -325,7 +325,7 @@ const TicketTable: React.FC = () => {
                 <td className="p-4">{ticket.SERVICE_TYPE || '-'}</td>
                 <td className="p-4">{ticket.WITEL || '-'}</td>
                 <td className="p-4">{ticket.WORKZONE || '-'}</td>
-                <td className="p-4">{ticket.STA_TUS || '-'}</td>
+                <td className="p-4">{ticket.STATUS || '-'}</td>
                 <td className="p-4">{ticket.STATUS_DATE || '-'}</td>
                 <td className="p-4">{ticket.TICKET_ID_GAMAS || '-'}</td>
                 <td className="p-4">{ticket.REPORTED_BY || '-'}</td>
