@@ -38,7 +38,7 @@ const Sidebar = () => {
           className="mb-4 p-2 hover:bg-[#083d6b] rounded-md cursor-pointer"
           onClick={navigateToSettings}
         >
-          Settings
+          Setting
         </div>
       </div>
     </div>

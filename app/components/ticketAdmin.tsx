@@ -685,7 +685,7 @@ const TicketEditPage: React.FC = () => {
               <th className="border border-gray-300 px-6 py-2">Reported Date</th>
               <th className="border border-gray-300 px-4 py-2">Summary</th>
               <th className="border border-gray-300 px-4 py-2">Status</th>
-              <th className="border border-gray-300 px-4 py-2">Action</th>
+              {/* <th className="border border-gray-300 px-4 py-2">Action</th> */}
             </tr>
           </thead>
           <tbody>
@@ -722,14 +722,14 @@ const TicketEditPage: React.FC = () => {
                     </span>
                   )}
                 </td>
-                <td className="border border-gray-300 px-4 py-2">
+                {/* <td className="border border-gray-300 px-4 py-2">
                   <button
                     onClick={() => (window.location.href = "/admin/edit")}
                     className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded"
                   >
                     Edit
                   </button>
-                </td>
+                </td> */}
               </tr>
             ))}
           </tbody>

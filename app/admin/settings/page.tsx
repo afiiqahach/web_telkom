@@ -41,7 +41,7 @@ const UserSettingsPage: React.FC = () => {
         <main className="flex-1 pl-80 pr-10">
           {/* Settings Header */}
           <header className="mb-6 pt-10">
-            <h1 className="text-2xl font-bold text-gray-800">Settings</h1>
+            <h1 className="text-2xl font-bold text-gray-800">Setting</h1>
           </header>
 
           {/* Settings Card */}
