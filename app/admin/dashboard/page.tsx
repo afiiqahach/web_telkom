@@ -1,118 +1,131 @@
-'use client'
+'use client';
 import React, { useEffect, useState } from "react";
 import { database } from "../../../lib/firebaseConfig";
 import { ref, onValue } from "firebase/database";
+import { useRouter } from "next/navigation"; // Import Next.js router for navigation
 
 interface Ticket {
-    id: string;
-    INCIDENT: string;
-    STATUS: string;
-  }
-  
-  const Dashboard: React.FC = () => {
-    const [tickets, setTickets] = useState<Ticket[]>([]);
-    const [statusCounts, setStatusCounts] = useState({
-      backend: 0,
-      analysis: 0,
-    });
-    useEffect(() => {
-        const ticketsRef = ref(database, "tickets");
-    
-        onValue(ticketsRef, (snapshot) => {
-          const data = snapshot.val();
-          if (data) {
-            const ticketsArray: Ticket[] = Object.keys(data).map((key) => ({
-              id: key,
-              ...data[key],
-            }));
-    
-            setTickets(ticketsArray);
-    
-            const backendCount = ticketsArray.filter(
-              (ticket) => ticket.STATUS === "backend"
-            ).length;
-            const analysisCount = ticketsArray.filter(
-              (ticket) => ticket.STATUS === "analysis"
-            ).length;
-    
-            setStatusCounts({
-              backend: backendCount,
-              analysis: analysisCount,
-            });
-          }
+  id: string;
+  INCIDENT: string;
+  STATUS: string;
+}
+
+const Dashboard: React.FC = () => {
+  const [tickets, setTickets] = useState<Ticket[]>([]);
+  const [statusCounts, setStatusCounts] = useState({
+    backend: 0,
+    analysis: 0,
+  });
+
+  const router = useRouter(); // Initialize router
+
+  useEffect(() => {
+    const ticketsRef = ref(database, "tickets");
+
+    onValue(ticketsRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const ticketsArray: Ticket[] = Object.keys(data).map((key) => ({
+          id: key,
+          ...data[key],
+        }));
+
+        setTickets(ticketsArray);
+
+        const backendCount = ticketsArray.filter(
+          (ticket) => ticket.STATUS.toLowerCase() === "backend"
+        ).length;
+        const analysisCount = ticketsArray.filter(
+          (ticket) => ticket.STATUS.toLowerCase() === "analysis"
+        ).length;
+
+        setStatusCounts({
+          backend: backendCount,
+          analysis: analysisCount,
         });
-      }, []);
-    
-      return (
-        <div className="min-h-screen pl-72 pr-6 bg-gray-100">
-    
-          {/* Main Content */}
-          <main className="flex-1 p-6">
-            <header className="flex justify-between items-center mb-6">
-              <h1 className="text-2xl font-bold text-gray-800">Dashboard</h1>
-            </header>
-    
-            {/* Kotak Status */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-              <div className="flex items-center bg-blue-100 p-6 rounded-lg shadow-md">
-                <div className="flex-1">
-                  <h2 className="text-lg font-medium text-gray-800">Backend</h2>
-                  <p className="text-4xl font-bold text-blue-600">
-                    {statusCounts.backend}
-                  </p>
-                </div>
-                <div className="text-blue-500 text-5xl">🖥️</div>
-              </div>
-              <div className="flex items-center bg-green-100 p-6 rounded-lg shadow-md">
-                <div className="flex-1">
-                  <h2 className="text-lg font-medium text-gray-800">Analysis</h2>
-                  <p className="text-4xl font-bold text-green-600">
-                    {statusCounts.analysis}
-                  </p>
-                </div>
-                <div className="text-green-500 text-5xl">📊</div>
-              </div>
+      }
+    });
+  }, []);
+
+  // Navigate to filtered tickets page
+  const handleNavigate = (status: string) => {
+    router.push(`/admin/status?status=${status}`);
+  };
+
+  return (
+    <div className="min-h-screen pl-72 pr-6 bg-gray-100">
+      <main className="flex-1 p-6">
+        <header className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-bold text-gray-800">Dashboard</h1>
+        </header>
+
+        {/* Kotak Status */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <div
+            className="flex items-center bg-blue-100 p-6 rounded-lg shadow-md cursor-pointer"
+            onClick={() => handleNavigate("backend")} // Navigate on click
+          >
+            <div className="flex-1">
+              <h2 className="text-lg font-medium text-gray-800">Backend</h2>
+              <p className="text-4xl font-bold text-blue-600">
+                {statusCounts.backend}
+              </p>
             </div>
-    
-            {/* Daftar Tiket */}
-            <header className="flex justify-between items-center mb-6">
-              <h1 className="text-2xl font-bold text-gray-800">Tickets</h1>
-            </header>
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-lg font-medium text-gray-800 mb-4">Recent Tickets</h2>
-              <table className="table-auto w-full text-left">
-                <thead>
-                  <tr className="bg-gray-100 border-b">
-                    <th className="py-3 px-4 text-gray-600">No</th>
-                    <th className="py-3 px-4 text-gray-600">Incident</th>
-                    <th className="py-3 px-4 text-gray-600">Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {tickets.slice(0, 5).map((ticket, index) => (
-                    <tr
-                      key={ticket.id}
-                      className="border-b hover:bg-gray-50 transition duration-200"
-                    >
-                      <td className="py-3 px-4 text-gray-700">{index + 1}</td>
-                      <td className="py-3 px-4 text-gray-700">{ticket.INCIDENT}</td>
-                      <td className="py-3 px-4 text-gray-700">{ticket.STATUS}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              <div className="text-right mt-4">
-                <button
-                  className="text-blue-600 font-medium hover:underline"
-                  onClick={() => (window.location.href = "/admin/ticketAdmin")}
-                >
-                  Show All
-                </button>
-              </div>
+            <div className="text-blue-500 text-5xl">🖥️</div>
+          </div>
+          <div
+            className="flex items-center bg-green-100 p-6 rounded-lg shadow-md cursor-pointer"
+            onClick={() => handleNavigate("analysis")} // Navigate on click
+          >
+            <div className="flex-1">
+              <h2 className="text-lg font-medium text-gray-800">Analysis</h2>
+              <p className="text-4xl font-bold text-green-600">
+                {statusCounts.analysis}
+              </p>
             </div>
-          </main>
+            <div className="text-green-500 text-5xl">📊</div>
+          </div>
         </div>
-      );
-    };
-    
-    export default Dashboard;
+
+        {/* Daftar Tiket */}
+        <header className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-bold text-gray-800">Tickets</h1>
+        </header>
+        <div className="bg-white rounded-lg shadow-md p-6">
+          <h2 className="text-lg font-medium text-gray-800 mb-4">Recent Tickets</h2>
+          <table className="table-auto w-full text-left">
+            <thead>
+              <tr className="bg-gray-100 border-b">
+                <th className="py-3 px-4 text-gray-600">No</th>
+                <th className="py-3 px-4 text-gray-600">Incident</th>
+                <th className="py-3 px-4 text-gray-600">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {tickets.slice(0, 5).map((ticket, index) => (
+                <tr
+                  key={ticket.id}
+                  className="border-b hover:bg-gray-50 transition duration-200"
+                >
+                  <td className="py-3 px-4 text-gray-700">{index + 1}</td>
+                  <td className="py-3 px-4 text-gray-700">{ticket.INCIDENT}</td>
+                  <td className="py-3 px-4 text-gray-700">{ticket.STATUS}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <div className="text-right mt-4">
+            <button
+              className="text-blue-600 font-medium hover:underline"
+              onClick={() => router.push("/admin/ticketAdmin")}
+            >
+              Show All
+            </button>
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+};
+
+export default Dashboard;
