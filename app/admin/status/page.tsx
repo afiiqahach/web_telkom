@@ -1,10 +1,10 @@
 'use client';
-import React, { useEffect, useState } from "react";
-import { database } from "../../../lib/firebaseConfig";
-import { ref, onValue } from "firebase/database";
-import { useSearchParams } from "next/navigation";
-import Sidebar from "@/app/components/sidebarAdmin";
-import Header from "@/app/components/headerAdmin";
+import React, { useEffect, useState } from 'react';
+import { database } from '../../../lib/firebaseConfig';
+import { ref, onValue } from 'firebase/database';
+import { useSearchParams, useRouter } from 'next/navigation';
+import Sidebar from '@/app/components/sidebarAdmin';
+import Header from '@/app/components/headerAdmin';
 
 interface Ticket {
   id: string;
@@ -13,14 +13,15 @@ interface Ticket {
   STATUS: string;
 }
 
-const TicketAdmin: React.FC = () => {
+const TicketStatus: React.FC = () => {
   const [tickets, setTickets] = useState<Ticket[]>([]);
-  const [searchQuery, setSearchQuery] = useState(""); // State untuk input pencarian
+  const [searchQuery, setSearchQuery] = useState(''); // State untuk input pencarian
   const searchParams = useSearchParams(); // Get query string
-  const statusFilter = searchParams.get("status")?.toLowerCase();
+  const statusFilter = searchParams.get('status')?.toLowerCase();
+  const router = useRouter();
 
   useEffect(() => {
-    const ticketsRef = ref(database, "tickets");
+    const ticketsRef = ref(database, 'tickets');
 
     onValue(ticketsRef, (snapshot) => {
       const data = snapshot.val();
@@ -47,8 +48,12 @@ const TicketAdmin: React.FC = () => {
     ticket.INCIDENT.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const handleDetailClick = (ticketId: string) => {
+    router.push(`/admin/ticketDetail?ticketId=${ticketId}`);
+  };
+
   return (
-    <div className=" min-h-screen bg-gray-100 pl-72 pr-8">
+    <div className="min-h-screen bg-gray-100 pl-72 pr-8">
       <div className="mt-20">
         {/* Sidebar */}
         <Sidebar />
@@ -81,15 +86,16 @@ const TicketAdmin: React.FC = () => {
 
       <div
         className="bg-white rounded-lg shadow-md overflow-auto border border-gray-300"
-        style={{ maxHeight: "600px" }}
+        style={{ maxHeight: '600px' }}
       >
         <table className="table-auto w-full text-left">
           <thead>
-            <tr className="bg-gray-100 border-b" style={{ position: "sticky", top: 0, zIndex: 10 }}>
+            <tr className="bg-gray-100 border-b" style={{ position: 'sticky', top: 0, zIndex: 10 }}>
               <th className="py-3 px-4 text-gray-600">No</th>
               <th className="py-3 px-4 text-gray-600">Incident</th>
               <th className="py-3 px-4 text-gray-600">Summary</th>
               <th className="py-3 px-4 text-gray-600">Status</th>
+              <th className="py-3 px-4 text-gray-600">Action</th> {/* Kolom Action */}
             </tr>
           </thead>
           <tbody>
@@ -100,14 +106,22 @@ const TicketAdmin: React.FC = () => {
               >
                 <td className="py-3 px-4 text-gray-700">{index + 1}</td>
                 <td className="py-3 px-4 text-gray-700">{ticket.INCIDENT}</td>
-                <td className="py-3 px-4 text-gray-700">{ticket.SUMMARY}</td>
+                <td className="py-3 pl-1 text-gray-700">{ticket.SUMMARY}</td>
                 <td className="py-3 px-4 text-gray-700">{ticket.STATUS}</td>
+                <td className="py-3 px-4 text-gray-700">
+                  <button
+                    onClick={() => handleDetailClick(ticket.id)} // Tombol Detail
+                    className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
+                  >
+                    Detail
+                  </button>
+                </td>
               </tr>
             ))}
             {filteredTickets.length === 0 && (
               <tr>
                 <td
-                  colSpan={3}
+                  colSpan={5} // Sesuaikan kolom dengan tambahan kolom Action
                   className="py-3 px-4 text-gray-600 text-center"
                 >
                   No tickets found.
@@ -121,4 +135,4 @@ const TicketAdmin: React.FC = () => {
   );
 };
 
-export default TicketAdmin;
+export default TicketStatus;

@@ -308,80 +308,80 @@
 // import { database } from '../../lib/firebaseConfig'; // Importing the initialized Firebase Realtime Database
 
 // type Ticket = {
-//   id: string;
-//   INCIDENT: string;
-//   TTR: string;
-//   CUSTOMER: string;
-//   SUMMARY: string;
-//   REPORTED_DATE: string;
-//   OWNER_GROUP: string;
-//   OWNER: string;
-//   CUSTOMER_SEGMENT: string;
-//   SERVICE_TYPE: string;
-//   WITEL: string;
-//   WORKZONE: string;
-//   STATUS: string;
-//   STATUS_DATE: string;
-//   TICKET_ID_GAMAS: string;
-//   REPORTED_BY: string;
-//   CONTACT_PHONE: string;
-//   CONTACT_NAME: string;
-//   CONTACT_EMAIL: string;
-//   BOOKING_DATE: string;
-//   DESCRIPTION_ASSIGNMENT: string;
-//   REPORTED_PRIORITY: string;
-//   SOURCE_TICKET: string;
-//   SUBSIDIARY: string;
-//   EXTERNAL_TICKET_ID: string;
-//   CHANNEL: string;
-//   CUSTOMER_TYPE: string;
-//   CLOSED_BY: string;
-//   CLOSED_REOPEN_BY: string;
-//   CUSTOMER_ID: string;
-//   CUSTOMER_NAME: string;
-//   SERVICE_ID: string;
-//   SERVICE_NO: string;
-//   SLG: string;
-//   TECHNOLOGY: string;
-//   LAPUL: string;
-//   GAUL: string;
-//   ONU_RX: string;
-//   PENDING_REASON: string;
-//   DATEMODIFIED: string;
-//   INCIDENT_DOMAIN: string;
-//   REGION: string;
-//   SYMPTOM: string;
-//   HIERARCHY_PATH: string;
-//   SOLUTION: string;
-//   DESCRIPTION_ACTUAL_SOLUTION: string;
-//   KODE_PRODUK: string;
-//   PERANGKAT: string;
-//   TECHNICIAN: string;
-//   DEVICE_NAME: string;
-//   WORKLOG_SUMMARY: string;
-//   CLASSIFICATION_FLAG: string;
-//   REALM: string;
-//   RELATED_TO_GAMAS: string;
-//   TSC_RESULT: string;
-//   SCC_RESULT: string;
-//   TTR_AGENT: string;
-//   TTR_MITRA: string;
-//   TTR_NASIONAL: string;
-//   TTR_PENDING: string;
-//   TTR_REGION: string;
-//   TTR_WITEL: string;
-//   TTR_END_TO_END: string;
-//   NOTE: string;
-//   GUARANTE_STATUS: string;
-//   RESOLVE_DATE: string;
-//   SN_ONT: string;
-//   TIPE_ONT: string;
-//   MANUFACTURE_ONT: string;
-//   IMPACTED_SITE: string;
-//   CAUSE: string;
-//   RESOLUTION: string;
-//   NOTES_ESKALASI: string;
-//   RK_INFORMATION: string;
+  // id: string;
+  // INCIDENT: string;
+  // TTR: string;
+  // CUSTOMER: string;
+  // SUMMARY: string;
+  // REPORTED_DATE: string;
+  // OWNER_GROUP: string;
+  // OWNER: string;
+  // CUSTOMER_SEGMENT: string;
+  // SERVICE_TYPE: string;
+  // WITEL: string;
+  // WORKZONE: string;
+  // STATUS: string;
+  // STATUS_DATE: string;
+  // TICKET_ID_GAMAS: string;
+  // REPORTED_BY: string;
+  // CONTACT_PHONE: string;
+  // CONTACT_NAME: string;
+  // CONTACT_EMAIL: string;
+  // BOOKING_DATE: string;
+  // DESCRIPTION_ASSIGNMENT: string;
+  // REPORTED_PRIORITY: string;
+  // SOURCE_TICKET: string;
+  // SUBSIDIARY: string;
+  // EXTERNAL_TICKET_ID: string;
+  // CHANNEL: string;
+  // CUSTOMER_TYPE: string;
+  // CLOSED_BY: string;
+  // CLOSED_REOPEN_BY: string;
+  // CUSTOMER_ID: string;
+  // CUSTOMER_NAME: string;
+  // SERVICE_ID: string;
+  // SERVICE_NO: string;
+  // SLG: string;
+  // TECHNOLOGY: string;
+  // LAPUL: string;
+  // GAUL: string;
+  // ONU_RX: string;
+  // PENDING_REASON: string;
+  // DATEMODIFIED: string;
+  // INCIDENT_DOMAIN: string;
+  // REGION: string;
+  // SYMPTOM: string;
+  // HIERARCHY_PATH: string;
+  // SOLUTION: string;
+  // DESCRIPTION_ACTUAL_SOLUTION: string;
+  // KODE_PRODUK: string;
+  // PERANGKAT: string;
+  // TECHNICIAN: string;
+  // DEVICE_NAME: string;
+  // WORKLOG_SUMMARY: string;
+  // CLASSIFICATION_FLAG: string;
+  // REALM: string;
+  // RELATED_TO_GAMAS: string;
+  // TSC_RESULT: string;
+  // SCC_RESULT: string;
+  // TTR_AGENT: string;
+  // TTR_MITRA: string;
+  // TTR_NASIONAL: string;
+  // TTR_PENDING: string;
+  // TTR_REGION: string;
+  // TTR_WITEL: string;
+  // TTR_END_TO_END: string;
+  // NOTE: string;
+  // GUARANTE_STATUS: string;
+  // RESOLVE_DATE: string;
+  // SN_ONT: string;
+  // TIPE_ONT: string;
+  // MANUFACTURE_ONT: string;
+  // IMPACTED_SITE: string;
+  // CAUSE: string;
+  // RESOLUTION: string;
+  // NOTES_ESKALASI: string;
+  // RK_INFORMATION: string;
 // };
 
 // const TicketEditPage: React.FC = () => {
@@ -682,10 +682,10 @@ const TicketEditPage: React.FC = () => {
             <tr className="bg-gray-200">
               <th className="border border-gray-300 px-4 py-2">No</th>
               <th className="border border-gray-300 px-4 py-2">Incident</th>
-              <th className="border border-gray-300 px-6 py-2">Reported Date</th>
+              <th className="border border-gray-300 px-10 py-2">Reported Date</th>
               <th className="border border-gray-300 px-4 py-2">Summary</th>
               <th className="border border-gray-300 px-4 py-2">Status</th>
-              {/* <th className="border border-gray-300 px-4 py-2">Action</th> */}
+              <th className="border border-gray-300 px-4 py-2">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -722,14 +722,14 @@ const TicketEditPage: React.FC = () => {
                     </span>
                   )}
                 </td>
-                {/* <td className="border border-gray-300 px-4 py-2">
-                  <button
-                    onClick={() => (window.location.href = "/admin/edit")}
-                    className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded"
+                <td className="border border-gray-300 px-10 py-2">
+                <button
+                  onClick={() => window.location.href = `/admin/ticketDetail?ticketId=${ticket.id}`}
+                  className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded"
                   >
-                    Edit
-                  </button>
-                </td> */}
+                  Detail
+                </button>
+                </td>
               </tr>
             ))}
           </tbody>
