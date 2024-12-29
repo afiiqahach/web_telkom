@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { ChevronDownIcon, SearchIcon, UserIcon } from '@heroicons/react/outline';
+import { ChevronDownIcon, UserIcon } from '@heroicons/react/outline';
+// import { ChevronDownIcon, SearchIcon, UserIcon } from '@heroicons/react/outline';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import { auth } from '@/lib/firebaseConfig.js';
@@ -10,7 +11,7 @@ import NotificationDropdown from './NotificationDropdown';
 const Header = () => {
   const [user, setUser] = useState<{ displayName: string | null; email: string | null } | null>(null);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState(''); // State untuk input search
+  // const [searchQuery, setSearchQuery] = useState(''); // State untuk input search
   const router = useRouter();
 
   useEffect(() => {
@@ -38,12 +39,12 @@ const Header = () => {
   const navigateToProfile = () => router.push('/profile')
 
   // Handler untuk search
-  const handleSearch = (event: React.FormEvent) => {
-    event.preventDefault(); // Mencegah reload
-    if (searchQuery.trim()) {
-      router.push(`/search?query=${encodeURIComponent(searchQuery)}`);
-    }
-  };
+  // const handleSearch = (event: React.FormEvent) => {
+  //   event.preventDefault(); // Mencegah reload
+  //   if (searchQuery.trim()) {
+  //     router.push(`/search?query=${encodeURIComponent(searchQuery)}`);
+  //   }
+  // };
 
   return (
     <div className="fixed top-0 left-0 right-0 flex justify-between items-center px-5 py-2 border-b shadow-md bg-white z-50">
@@ -59,7 +60,7 @@ const Header = () => {
       </div>
 
       {/* Search Bar */}
-      <form onSubmit={handleSearch} className="relative w-[440px]">
+      {/* <form onSubmit={handleSearch} className="relative w-[440px]">
         <input
           type="text"
           value={searchQuery}
@@ -70,7 +71,7 @@ const Header = () => {
         <button type="submit" className="absolute left-3 top-2.5">
           <SearchIcon className="h-5 w-5 text-gray-400" />
         </button>
-      </form>
+      </form> */}
 
       {/* Profil dan Notifikasi */}
       <div className="flex items-center gap-4">
